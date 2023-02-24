@@ -9,15 +9,22 @@ int main(int argc, char** argv)
 {
     printf("Bonjour je suis '%s'\n",argv[0]);
 
-    for(int i = 2 ; i<argc ; i++)
+    int nbProcess = 0;
+    for(int i = 3 ; i<argc ; i++)
     {
         if(fork() == 0)
         {
             execl(argv[1], argv[1], argv[i], NULL);
         }
+        nbProcess++;
+
+        if (nbProcess == atoi(argv[2])) {
+            wait(NULL);
+            nbProcess--;
+        }
     }
     
-    for(int i = 2 ; i<argc ; i++)
+    for(int i = 0 ; i<nbProcess ; i++)
         wait(NULL);
     
     return EXIT_SUCCESS;
