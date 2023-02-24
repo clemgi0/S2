@@ -7,6 +7,7 @@ int main(int argc, char** argv)
 {
     int duration = 0;
 
+    printf("%d : début\n", getpid());
     if (argc > 1) {
         duration = atoi(argv[1]);
         assert(duration > 0);
