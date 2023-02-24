@@ -4,7 +4,7 @@
 # construire la *première* cible du Makefile.
 default: all
 
-all: rebours parexec app
+all: rebours parexec exo
 
 ##########################################
 # compilation des programmes
@@ -30,4 +30,4 @@ app: app.c
 # nettoyage des fichiers générés
 
 clean:
-	rm -f *.o parexec rebours app
+	rm -f *.o parexec rebours exo

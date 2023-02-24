@@ -5,7 +5,13 @@
 
 int main(int argc, char** argv)
 {
-    printf("Bonjour je suis '%s'\n",argv[0]);
+
+    if (fork()) {
+        execl("./rebours", "./rebours", "4", NULL);
+    }
+    else {
+        execl("./rebours", "./rebours", "2", NULL);
+    }
 
     return EXIT_SUCCESS;
 }
