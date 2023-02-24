@@ -10,6 +10,7 @@ int main(int argc, char** argv)
     printf("Bonjour je suis '%s'\n",argv[0]);
 
     int nbProcess = 0;
+    int statusCode;
     for(int i = 3 ; i<argc ; i++)
     {
         if(fork() == 0)
@@ -19,8 +20,10 @@ int main(int argc, char** argv)
         nbProcess++;
 
         if (nbProcess == atoi(argv[2])) {
-            wait(NULL);
+            wait(&statusCode);
             nbProcess--;
+            if (!WIFEXITED(statusCode))
+                break;
         }
     }
     
