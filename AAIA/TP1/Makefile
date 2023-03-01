@@ -6,7 +6,7 @@ ECHO		:= 	echo
 MKDIR		:= 	mkdir
 
 #Options
-CXXFLAGS	:= 	-O3 -Wall -Werror
+CXXFLAGS	:= 	-g -Wall -Werror -lm
 DEVFLAGS	:= 	-DMAP
 RMFLAGS		:= 	-rf
 
