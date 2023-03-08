@@ -1,0 +1,32 @@
+
+This license is applied to the EditiX XML Editor product : http://www.editix.com
+JAPISOFT is a French Company, owner of EditiX XML Editor
+
+I. For using EditiX XML Editor you can't : 
+
+(a) reverse engineer, decompile, disassemble, alter, merge, modify, adapt or translate editiX;
+(b) rent, lease or sub-license editiX;
+(c) modify editiX or create derivative works based upon editiX;
+(d) share, install or use the same editiX register account concurrently on different user account
+
+II. 30 Day Evaluation period is for evaluation purposes only and cannot be used for any other purposes
+
+For registring, please go to http://www.editix.com/buy.html
+
+---------------------------------------------------------------------------------------
+
+DISCLAIMER OF WARRANTIES
+
+YOU AGREE THAT JAPISOFT HAS MADE NO WARRANTIES, EITHER EXPRESS OR IMPLIED, REGARDING THE SOFTWARE, INCLUDING BUT NOT LIMITED TO IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT AND ERROR FREE OPERATION. YOU ACCEPT THE SOFTWARE "AS IS" AND WITHOUT WARRANTY.
+
+LIMITATION OF LIABILITY
+
+IN NO EVENT SHALL THE AGGREGATE AMOUNT OF DAMAGES PAYABLE TO YOU FOR ANY CLAIM ARISING FROM THE SOFTWARE OR THIS AGREEMENT EXCEED THE AMOUNTS YOU PAID FOR YOUR LICENSE. JAPISOFT WILL NOT BE LIABLE UNDER ANY CIRCUMSTANCES FOR LOST PROFITS, LOST OPPORTUNITIES, OR FOR SPECIAL, CONSEQUENTIAL, INDIRECT, INCIDENTAL OR PUNITIVE DAMAGES, ARISING OUT OF OR RELATED TO THE USE OF OR INABILITY TO USE THE SOFTWARE, REGARDLESS OF WHETHER JAPISOFT HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
+
+The Agreement is governed by French law. The Parties agree to endeavor to seek an amicable solution to any disagreements or disputes that may arise during the performance of the Agreement.
+
+Failing an amicable solution within two (2) months as from their occurrence, and unless emergency proceedings are necessary, the disagreements or disputes shall be referred to the Paris Courts having jurisdiction, by the more diligent Party.
+
+This Agreement constitutes the entire agreement between you and japisoft with respect to the licensing of the Software.
+
+In any legal action or arbitration relating to this Agreement, the prevailing party shall recover from the other party all costs of litigation or arbitration, including reasonable attorneys fees.

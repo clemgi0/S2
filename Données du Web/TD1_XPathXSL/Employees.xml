@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+<?xml-stylesheet type="text/xsl" href="cadre.xsl"?>
+-->
+<Company>
+	<Employee id="01" salary="10000">
+		<FirstName>Tim</FirstName>
+		<LastName>Browne</LastName>
+		<Position>CEO</Position>
+		<Email>TBrowne@Infoteria.com</Email>
+		<Category>Officer</Category>
+		<Age>25</Age>
+	</Employee>
+	<Employee id="02">
+		<FirstName>David</FirstName>
+		<LastName>Silverlight</LastName>
+		<Position>Chief XML Evangelist</Position>
+		<Email>HeadGeek@XMLPitstop.com</Email>
+		<Category>Evangelist</Category>
+		<Age>30 </Age>
+	</Employee>
+	<Employee id="03" salary="6000">
+		<FirstName>Mike</FirstName>
+		<LastName>Damphouse</LastName>
+		<Position>Chief Marketing Officer </Position>
+		<Email>MDamphouse@Infoteria.com</Email>
+		<Category>Officer</Category>
+		<Age>31</Age>
+	</Employee>
+	<Employee id="04">
+		<FirstName>Todd</FirstName>
+		<LastName>Headrick</LastName>
+		<Position>Chief Technology Officer</Position>
+		<Email>Theadrick@Infoteria.com</Email>
+		<Category>Officer</Category>
+		<Age>33</Age>
+	</Employee>
+	<Employee id="05" salary="7000">
+		<Age>35</Age>
+		<FirstName>Lilly</FirstName>
+		<LastName>Rose</LastName>
+		<Position>President of Operations</Position>
+		<Email>LRose@xmlcom</Email>
+		<Category>President</Category>
+	</Employee>
+	<Employee id="06">
+		<FirstName>Timm</FirstName>
+		<LastName>Cok</LastName>
+		<Position>CEO</Position>
+		<Email>tcok@apple.com</Email>
+		<Category>President</Category>
+		<Age>55</Age>
+	</Employee>
+	<Employee id="07">
+		<FirstName>John</FirstName>
+		<LastName>Wayne</LastName>
+		<Position>Problem solver</Position>
+		<Email>Cowboy@XML.com</Email>
+		<Category>Officer</Category>
+		<Age>40</Age>
+	</Employee>
+	<Employee id="08" salary="20000">
+		<FirstName>Joe</FirstName>
+		<LastName>Dalton</LastName>
+		<Position>Chief Evasion Officer</Position>
+		<Email>Chief@Dalton.com</Email>
+		<Category>President</Category>
+		<Age>31</Age>
+	</Employee>
+	<Employee id="09">
+		<FirstName>Averell</FirstName>
+		<LastName>Dalton</LastName>
+		<Position>Tall Evasion Officer</Position>
+		<Email>Averell@Dalton.com</Email>
+		<Category>Officer</Category>
+		<Age>25</Age>
+	</Employee>
+	<Employee id="10">
+		<FirstName>Rantan</FirstName>
+		<LastName>Plan</LastName>
+		<Position>Watchdog</Position>
+		<Email>RPlan@waouf.com</Email>
+		<Category>Guardian</Category>
+		<Age>10</Age>
+	</Employee>
+</Company>

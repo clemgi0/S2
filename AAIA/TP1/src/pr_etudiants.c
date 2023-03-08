@@ -63,7 +63,6 @@ void computeProba(double* sk, DIGRAPH* g, double alpha) {
         if (g->nbSucc[i] == 0)
             qabs += skprev[i];
     qabs /= g->n;
-
     double q = (1.-alpha) / g->n ;
 
     for(int i = 0 ; i<g->n ; i++) {

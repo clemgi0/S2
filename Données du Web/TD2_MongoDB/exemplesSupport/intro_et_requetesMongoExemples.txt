@@ -1,0 +1,263 @@
+Exemples partie introduction
+
+Instructions d'importation des données en utilisant mongoimport (en ligne de commande, en dehors du client mongo!!)
+
+
+mongoimport --db tdMongo --collection artists --file "artists.json"
+mongoimport --db tdMongo --collection movies --file "movies.json"
+
+Ensuite se connecter à mongodb avec mongo (client en ligne de commande)
+Se positionner sur la base tdMongo avec
+use tdMongo
+
+Vérifier que les collections artists et movies sont bien créées avec
+show collections
+
+
+=====================================
+db.artists.insert(
+{
+"_id": "artist:250",
+"last_name": "Delon",
+"first_name": "Alain",
+"birth_date": "1935"
+}
+);
+
+db.artists.save(
+{
+"_id": "artist:250",
+"last_name": "Gibson",
+"first_name": "Mel",
+"birth_date": "1935"
+}
+);
+
+
+db.artists.insert(
+{
+"last_name": "Delon",
+"first_name": "Alain",
+"birth_date": "1935"
+}
+);
+
+
+db.artists.find({"last_name": "Delon"});
+db.artists.find({"_id": "artist:250"});
+
+db.artists.insert(
+{
+"_id": "artist:250",
+"last_name": "Gibson",
+"first_name": "Mel",
+"birth_date": "1956"
+}
+);
+
+
+db.artists.insert(
+{
+"last_name": "Gibson",
+"first_name": "Mel",
+"birth_date": "1956"
+}
+);
+
+
+db.artists.find({"last_name": "Gibson"});
+db.artists.save(
+{
+"_id": "artist:250",
+"last_name": "Gibson",
+"first_name": "Mel",
+"birth_date": "1956"
+}
+);
+
+
+db.artists.save(
+{
+
+"last_name": "Gibson",
+"first_name": "Mel",
+"birth_date": "1956"
+}
+);
+
+db.artists.find({"last_name": "Gibson"});
+
+db.artists.remove({"last_name": "Gibson"});
+
+_______________
+update
+
+db.movies.updateMany(
+	{"year": 
+		{
+			$lt: 2000
+		}
+	},
+	{$set : {
+			  old:true
+			}
+	}
+)
+
+
+db.movies.find({old:true})
+db.movies.find({old:true}).pretty()
+
+db.movies.updateMany(
+{"year": {$lt: 2000}},
+{$set : {old:true}}
+)
+
+db.movies.find({old:true})
+db.movies.find({old:true}).count()
+
+db.movies.update(
+{"year": {$lt: 2000}},
+{$unset : {old:true}}, 
+{multi:true}
+)
+
+db.movies.updateMany(
+	{"year": {$lt: 2000}},
+	{$unset : {old:true}}
+)
+
+db.movies.update({"year": {$lt: 2000}},{$set : {old:true}}, {multi:true})
+
+------------------
+find
+
+db.movies.find(
+{"country": {$ne:"USA"}}).pretty().limit(5);
+
+db.movies.find(
+{"country": {$ne:"USA"}},
+{title:1, country:1,_id:0}).limit(5).pretty();
+
+db.movies.find(
+{"country": {$ne:"USA"}},
+{_id:0,title:1}).limit(5);
+
+db.movies.find({"country": {$ne:"USA"}}).limit(5)
+
+db.movies.find({"country":{$ne:"USA"}},{_id:0,title:1})
+
+Exclure l’année : 
+db.movies.find({"country":"USA"},{year:0})
+
+Retourner le titre et le genre et le _id
+db.movies.find({"country":"USA"},{title:1,genre:1})
+
+Retourner les films possédant un rôle donné
+db.movies.find({"actors.role":"William Munny"})
+
+Retourner que le titre et le genre
+db.movies.find({"country":"USA"},{title:1,genre:1, _id:0})
+
+Trier les résultats 
+db.movies.find({"year": {$gt: 2000}}).sort({year:-1})
+db.movies.find({"year": {$gt: 2000}},{title:1,year:1, _id:0}).sort({year:-1})
+
+db.movies.find({$and : 
+		[
+			{year: 2003}, 
+			{genre: "romance"}
+		] },
+		{"title":1,"genre":1, "_id":0});
+
+
+db.movies.find({$or : 
+		[
+			{"year": 2003}, 
+			{genre: "romance"},
+			{genre: "action"}
+		] 
+		},
+		{"title":1,"genre":1, "year":1}
+		);
+
+db.movies.find({$and : 
+		[
+			{$or : 
+				[
+					{"year": 2003}, 
+					{genre: "romance"},
+					{genre: "action"}
+				] 
+			}, 
+			{country: "USA"}
+		] },
+		{"title":1,"genre":1, "_id":0});
+
+		
+
+-----------------------
+curseur
+
+var myCursor = db.movies.find( { country: 'FR' } );
+while (myCursor.hasNext()) {
+   print(tojson(myCursor.next()));
+}
+
+var cur = db.movies.find();
+cur.sort( {title: -1} ).limit(1).skip(2);
+
+--------------------------------------------------
+jointure entre deux collections, donner les titres de films français et les acteurs qui y jouent
+
+var myCursor = db.movies.find({country:"FR"});
+while (myCursor.hasNext()) {
+   film = myCursor.next();
+   print(film.title)
+   film.actors.forEach(function (actor){
+		//print(actor);
+		var l_artist_c = db.artists.find({"_id" : actor.old_id});
+		var artist_name = l_artist_c.hasNext() ? l_artist_c.next().last_name : "";
+		print ("- "+artist_name);
+   });
+}
+
+--------------------------
+
+db.movies.aggregate([
+	{$group:{_id:"$country"}}
+]);
+
+db.movies.aggregate([
+	{$group:{_id:"$country",nb_films:{$sum:1}}}
+]);
+
+db.movies.aggregate([
+{$match:{country:"USA"}},
+{$group:{_id:"$genre", nb_films:{$sum:1}}}
+]);
+
+db.movies.aggregate([
+{$match:{genre:"Horreur"}},
+{$group:{_id:"$genre",date_du_premier_film:
+				    {$min:"$year"}}}
+]);
+
+db.movies.aggregate([
+{$group:{_id:"$genre",
+		date_du_premier_film:{$min:"$year"}, 
+		nb_films:{$sum:1}}}
+]);
+
+db.movies.aggregate([
+{$group:{_id:"$genre",date_du_premier_film:
+				    {$min:"$year"}}}
+]);
+
+
+db.movies.aggregate([
+{$group:{_id:"$genre",date_du_premier_film:
+				    {$min:"$year"}}},
+{$match:{_id:"Horreur"}}
+]);
+
