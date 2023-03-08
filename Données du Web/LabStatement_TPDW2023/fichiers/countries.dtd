@@ -6,7 +6,7 @@
         <!ELEMENT metadonnees (description,cree_le,objectif)>
 
         <!ELEMENT country (country_name,tld*,country_codes,currency*,callingCode*,
-                capital,altSpellings*, infosContinent*,languages*,
+                capital,altSpellings+, infosContinent+,languages+,
                 coordinates*,demonym,landlocked,borders*)>
 
         <!ATTLIST country
