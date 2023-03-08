@@ -30,11 +30,11 @@
                 <ul>
                     <xsl:for-each select="//country[count(languages/*)>2]/country_name/common_name">
                         <li>
-                            <xsl:value-of select="current()"></xsl:value-of>
-                             :
+                            <xsl:value-of select="current()"/>
+                            :
                             <xsl:for-each select="../../languages/*">
-                                <xsl:value-of select="current()"></xsl:value-of>
-                                 (<xsl:value-of select="name()"></xsl:value-of>)
+                                <xsl:value-of select="current()"/>
+                                (<xsl:value-of select="name()"/>)
                                 <xsl:if test="position() != last()">, </xsl:if>
                             </xsl:for-each>
                         </li>
@@ -43,11 +43,18 @@
 
                 <xsl:for-each select="//continent[not(preceding::continent/. = .) and text() != '']">
                     <xsl:variable name="continent" select="current()"/>
-                    <h3>Pays du continent : <xsl:value-of select="$continent"/> par sous-régions :</h3>
+                    <h3>Pays du continent :
+                        <xsl:value-of select="$continent"/> par sous-régions :
+                    </h3>
 
-                    <xsl:for-each select="//infosContinent[continent = $continent]/subregion[not(preceding::subregion/. = .)]">
+                    <xsl:for-each
+                            select="//infosContinent[continent = $continent]/subregion[not(preceding::subregion/. = .)]">
                         <xsl:variable name="subregion" select="current()"/>
-                        <h4><xsl:value-of select="current()"/> (<xsl:value-of select="count(//country[infosContinent/continent = $continent and infosContinent/subregion = $subregion])"/> pays)</h4>
+                        <h4>
+                            <xsl:value-of select="current()"/> (<xsl:value-of
+                                select="count(//country[infosContinent/continent = $continent and infosContinent/subregion = $subregion])"/>
+                            pays)
+                        </h4>
 
                         <table border="3" width="100%" align="center">
                             <tr>
@@ -59,7 +66,8 @@
                                 <th>Flag</th>
                                 <th>Spoken languages</th>
                             </tr>
-                            <xsl:apply-templates select="//country[infosContinent/continent = $continent and infosContinent/subregion = $subregion]"/>
+                            <xsl:apply-templates
+                                    select="//country[infosContinent/continent = $continent and infosContinent/subregion = $subregion]"/>
                         </table>
 
                     </xsl:for-each>
@@ -83,19 +91,27 @@
                 <xsl:value-of select="position()"/>
             </td>
             <td>
-                <xsl:value-of select="country_name/offic_name"/>
+                <span style="color:green">
+                    <xsl:value-of select="country_name/offic_name"/>
+                </span>
                 (<xsl:value-of select="country_name/common_name"/>)
                 <xsl:if test="count(country_name/native_name[@lang = 'fra']) = 1">
                     <br/>
-                    <span style="color:blue">Nom français : <xsl:value-of select="country_name/native_name[@lang = 'fra']/offic_name"/></span>
+                    <span style="color:blue">
+                        Nom français :
+                        <xsl:value-of select="country_name/native_name[@lang = 'fra']/offic_name"/>
+                    </span>
                 </xsl:if>
             </td>
             <td>
                 <xsl:value-of select="capital"/>
             </td>
             <td>
-                Latitude : <xsl:value-of select="coordinates/@lat"/><br/>
-                Longitude : <xsl:value-of select="coordinates/@long"/>
+                Latitude :
+                <xsl:value-of select="coordinates/@lat"/>
+                <br/>
+                Longitude :
+                <xsl:value-of select="coordinates/@long"/>
             </td>
             <td>
                 <xsl:choose>
@@ -106,17 +122,18 @@
                         <xsl:apply-templates select="borders/neighbour"/>
                     </xsl:otherwise>
                 </xsl:choose>
-                
+
             </td>
             <td>
 
-                <img src="http://www.geonames.org/flags/x/{translate(country_codes/cca2, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')}.gif" height="40" width="60"/>
+                <img src="https://www.geonames.org/flags/x/{translate(country_codes/cca2, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')}.gif"
+                     height="40" width="60"/>
             </td>
             <td>
-               <xsl:for-each select="languages/*">
-                   <xsl:value-of select="current()"></xsl:value-of>
-                   <xsl:if test="position() != last()">, </xsl:if>
-               </xsl:for-each>
+                <xsl:for-each select="languages/*">
+                    <xsl:value-of select="current()"/>
+                    <xsl:if test="position() != last()">,</xsl:if>
+                </xsl:for-each>
             </td>
         </tr>
     </xsl:template>
@@ -128,7 +145,7 @@
 
         <xsl:if test="count(//country[country_codes/cca3 = $code]) > 0">
             <xsl:value-of select="//country[country_codes/cca3 = $code]/country_name/offic_name"/>
-            <xsl:if test="position() != last()">, </xsl:if>
+            <xsl:if test="position() != last()">,</xsl:if>
         </xsl:if>
 
     </xsl:template>
