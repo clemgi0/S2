@@ -41,6 +41,14 @@
                     </xsl:for-each>
                 </ul>
 
+                <xsl:for-each select="//country">
+                    <xsl:sort select="count(borders/neighbour)" data-type="number" order="descending"/>
+                    <xsl:if test="position()=1">
+                        Countries having the most neighbours: <xsl:value-of select="country_name/common_name"/>,
+                        nb de voisins : <xsl:value-of select="count(borders/neighbour)"/>
+                    </xsl:if>
+                </xsl:for-each>
+
                 <xsl:for-each select="//continent[not(preceding::continent/. = .) and text() != '']">
                     <xsl:variable name="continent" select="current()"/>
                     <h3>Pays du continent :
