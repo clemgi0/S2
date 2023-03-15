@@ -1,0 +1,46 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/jakarta-oro-2.0.8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/serializer.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/jakarta-regexp-1.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/msv.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/poi-ooxml-3.12-20150511.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/commons-logging-api-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/poi-ooxml-schemas-3.12-20150511.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/poi-scratchpad-3.12-20150511.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/commons-httpclient-3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/ant.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/commons-logging-tests.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/xercesImpl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/commons-logging-1.1.1-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/xml-apis.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/saxon.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/resolver.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/commons-logging-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/jdom.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/Tidy.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/editix.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/trang.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/xmldb.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/htmlparser-1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/commons-logging-1.1.1-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/commons-collections-testframework-3.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/commons-logging-adapters-1.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/json.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/xalan.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/commons-collections-3.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/commons-net-3.3.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/relaxngDatatype.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/isorelax.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/cssparser-0.9.5.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/swing-layout-1.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/xsdlib.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/xmlbeans-2.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/poi-3.12-20150511.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/edtftpj-1.4.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

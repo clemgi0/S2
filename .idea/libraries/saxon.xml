@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="saxon">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/saxon/saxon9pe.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/saxon/saxon9-sql.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/saxon/saxon9-unpack.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
