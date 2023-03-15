@@ -1,3 +1,6 @@
+
+const countriesXML = chargerHttpXML("../countriesTP.xml");
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function recupererPremierEnfantDeTypeElement(n) {
@@ -9,14 +12,14 @@ function recupererPremierEnfantDeTypeElement(n) {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//change le contenu de l'élement avec l'id "nom" avec la chaine de caractéres en paramètre	  
+//change le contenu de l'ï¿½lement avec l'id "nom" avec la chaine de caractï¿½res en paramï¿½tre	  
 function setNom(nom) {
     let elementHtmlARemplir = window.document.getElementById("id_nom_a_remplacer");
     elementHtmlARemplir.innerHTML = nom;
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//charge le fichier XML se trouvant à l'URL relative donné dans le paramètreet le retourne
+//charge le fichier XML se trouvant ï¿½ l'URL relative donnï¿½ dans le paramï¿½treet le retourne
 function chargerHttpXML(xmlDocumentUrl) {
 
     let httpAjax;
@@ -29,7 +32,7 @@ function chargerHttpXML(xmlDocumentUrl) {
         httpAjax.overrideMimeType('text/xml');
     }
 
-    //chargement du fichier XML à l'aide de XMLHttpRequest synchrone (le 3° paramètre est défini à false)
+    //chargement du fichier XML ï¿½ l'aide de XMLHttpRequest synchrone (le 3ï¿½ paramï¿½tre est dï¿½fini ï¿½ false)
     httpAjax.open('GET', xmlDocumentUrl, false);
     httpAjax.send();
 
@@ -37,7 +40,7 @@ function chargerHttpXML(xmlDocumentUrl) {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
-// Charge le fichier JSON se trouvant à l'URL donnée en paramètre et le retourne
+// Charge le fichier JSON se trouvant ï¿½ l'URL donnï¿½e en paramï¿½tre et le retourne
 function chargerHttpJSON(jsonDocumentUrl) {
 
     let httpAjax;
@@ -50,7 +53,7 @@ function chargerHttpJSON(jsonDocumentUrl) {
         httpAjax.overrideMimeType('text/xml');
     }
 
-    // chargement du fichier JSON à l'aide de XMLHttpRequest synchrone (le 3° paramètre est défini à false)
+    // chargement du fichier JSON ï¿½ l'aide de XMLHttpRequest synchrone (le 3ï¿½ paramï¿½tre est dï¿½fini ï¿½ false)
     httpAjax.open('GET', jsonDocumentUrl, false);
     httpAjax.send();
 
@@ -64,13 +67,13 @@ function Bouton2_ajaxEmployees(xmlDocumentUrl) {
 
     let xmlDocument = chargerHttpXML(xmlDocumentUrl);
 
-    //extraction des noms à partir du document XML (avec une feuille de style ou en javascript)
+    //extraction des noms ï¿½ partir du document XML (avec une feuille de style ou en javascript)
     let lesNoms = xmlDocument.getElementsByTagName("LastName");
 
     // Parcours de la liste des noms avec une boucle for et 
-    // construction d'une chaine de charactères contenant les noms séparés par des espaces
+    // construction d'une chaine de charactï¿½res contenant les noms sï¿½parï¿½s par des espaces
     // Pour avoir la longueur d'une liste : attribut 'length'
-    // Accès au texte d'un nœud "LastName" : NOM_NOEUD.firstChild.nodeValue
+    // Accï¿½s au texte d'un nï¿½ud "LastName" : NOM_NOEUD.firstChild.nodeValue
     let chaineDesNoms = "";
     for (i = 0; i < lesNoms.length; i++) {
         if (i > 0) {
@@ -80,7 +83,7 @@ function Bouton2_ajaxEmployees(xmlDocumentUrl) {
     }
 
 
-    // Appel (ou recopie) de la fonction setNom(...) ou bien autre façon de modifier le texte de l'élément "span"
+    // Appel (ou recopie) de la fonction setNom(...) ou bien autre faï¿½on de modifier le texte de l'ï¿½lï¿½ment "span"
     setNom(chaineDesNoms);
 
 
@@ -89,66 +92,65 @@ function Bouton2_ajaxEmployees(xmlDocumentUrl) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function Bouton3_ajaxBibliographie(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer) {
 
-    // Chargement du fichier XSL à l'aide de XMLHttpRequest synchrone 
+    // Chargement du fichier XSL ï¿½ l'aide de XMLHttpRequest synchrone 
     let xslDocument = chargerHttpXML(xslDocumentUrl);
 
-    //création d'un processuer XSL
+    //crï¿½ation d'un processuer XSL
     let xsltProcessor = new XSLTProcessor();
 
     // Importation du .xsl
     xsltProcessor.importStylesheet(xslDocument);
 
-    // Chargement du fichier XML à l'aide de XMLHttpRequest synchrone 
+    // Chargement du fichier XML ï¿½ l'aide de XMLHttpRequest synchrone 
     let xmlDocument = chargerHttpXML(xmlDocumentUrl);
 
-    // Création du document XML transformé par le XSL
+    // Crï¿½ation du document XML transformï¿½ par le XSL
     let newXmlDocument = xsltProcessor.transformToDocument(xmlDocument);
 
-    // Recherche du parent (dont l'id est "here") de l'élément à remplacer dans le document HTML courant
+    // Recherche du parent (dont l'id est "here") de l'ï¿½lï¿½ment ï¿½ remplacer dans le document HTML courant
     let elementHtmlParent = window.document.getElementById("id_element_a_remplacer");
 
-    // insérer l'élement transformé dans la page html
+    // insï¿½rer l'ï¿½lement transformï¿½ dans la page html
     elementHtmlParent.innerHTML = newXmlDocument.getElementsByTagName(baliseElementARecuperer)[0].innerHTML;
 
 
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function Bouton4_ajaxBibliographieAvecParametres(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, paramXSL_type_reference) {
+function Bouton4_ajaxBibliographieAvecParametres(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, paramXSL_type_reference, id) {
 
-    // Chargement du fichier XSL à l'aide de XMLHttpRequest synchrone 
+    // Chargement du fichier XSL ï¿½ l'aide de XMLHttpRequest synchrone 
     let xslDocument = chargerHttpXML(xslDocumentUrl);
 
-    //création d'un processuer XSL
+    //crï¿½ation d'un processuer XSL
     let xsltProcessor = new XSLTProcessor();
 
     // Importation du .xsl
     xsltProcessor.importStylesheet(xslDocument);
 
-    //passage du paramètre à la feuille de style
+    //passage du paramï¿½tre ï¿½ la feuille de style
     xsltProcessor.setParameter("", "param_ref_type", paramXSL_type_reference);
 
-    // Chargement du fichier XML à l'aide de XMLHttpRequest synchrone 
+    // Chargement du fichier XML ï¿½ l'aide de XMLHttpRequest synchrone 
     let xmlDocument = chargerHttpXML(xmlDocumentUrl);
 
-    // Création du document XML transformé par le XSL
+    // Crï¿½ation du document XML transformï¿½ par le XSL
     let newXmlDocument = xsltProcessor.transformToDocument(xmlDocument);
 
-    // Recherche du parent (dont l'id est "here") de l'élément à remplacer dans le document HTML courant
-    let elementHtmlParent = window.document.getElementById("id_element_a_remplacer");
+    // Recherche du parent (dont l'id est "here") de l'ï¿½lï¿½ment ï¿½ remplacer dans le document HTML courant
+    let elementHtmlParent = window.document.getElementById(id);
 
-    // insérer l'élement transformé dans la page html
+    // insï¿½rer l'ï¿½lement transformï¿½ dans la page html
     elementHtmlParent.innerHTML = newXmlDocument.getElementsByTagName(baliseElementARecuperer)[0].innerHTML;
-
-
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function Bouton4_ajaxEmployeesTableau(xmlDocumentUrl, xslDocumentUrl) {
-    //commenter la ligne suivante qui affiche la boîte de dialogue!
-    alert("Fonction à compléter...");
+    //commenter la ligne suivante qui affiche la boï¿½te de dialogue!
+    alert("Fonction ï¿½ complï¿½ter...");
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 let blueMode = false;
 document.getElementById("switchMode").addEventListener("click", (ev) => {
     blueMode = !blueMode;
@@ -159,3 +161,53 @@ document.getElementById("switchMode").addEventListener("click", (ev) => {
     document.body.style.color = color;
     ev.target.innerHTML = text;
 });
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//button 3
+
+let codes = countriesXML.getElementsByTagName("cca2");
+
+for (let i = 0; i < codes.length; i++) {
+    option = document.createElement("option")
+    option.text = codes[i].innerHTML
+    option.value = codes[i].innerHTML;
+    document.getElementById("countrySelect").appendChild(option)
+}
+
+function button3() {
+    Bouton4_ajaxBibliographieAvecParametres("../countriesTP.xml", "../cherchePays.xsl", "pays", document.getElementById("countrySelect").value, "countrySelectName")
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//button 6
+
+function button6() {
+    const worldMap = chargerHttpXML("./worldHigh.svg");
+    const serializedWorldMap = new XMLSerializer();
+    document.getElementById("worldMap").innerHTML = serializedWorldMap.serializeToString(worldMap);
+    document.getElementById("worldMap").addEventListener("mouseover", (ev) => {
+        if (ev.target.attributes.countryname !== undefined) {
+            let cca2 = ev.target.attributes.id.value;
+            document.getElementById("Name").innerText = ev.target.attributes.countryname.value;
+            Bouton4_ajaxBibliographieAvecParametres("../countriesTP.xml", "../cherchePays.xsl", "capital", cca2, "Capital")
+            Bouton4_ajaxBibliographieAvecParametres("../countriesTP.xml", "../cherchePays.xsl", "languages", cca2, "LanguagesSpoken")
+            Bouton4_ajaxBibliographieAvecParametres("../countriesTP.xml", "../cherchePays.xsl", "flag", cca2, "Flag")
+            let jsonurl = "https://restcountries.com/v2/alpha/" + cca2
+            let json = chargerHttpJSON(jsonurl)
+            document.getElementById("Currency").innerText = json.currencies[0].name
+        }
+    })
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//part 11
+
+
+let code = document.getElementById("countrySelect").value;
+
+let xslDocument = chargerHttpXML("../cherchePays.xsl");
+let xsltProcessor = new XSLTProcessor();
+xsltProcessor.importStylesheet(xslDocument);
+xsltProcessor.setParameter("", "param_ref_type", code);
+let newXmlDocument = xsltProcessor.transformToDocument(countriesXML);
+newXmlDocument.getElementsByTagName(baliseElementARecuperer)

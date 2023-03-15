@@ -1,13 +1,15 @@
 <!doctype html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>TP Données du Web - AJAX</title>
     <script type="text/javascript" src="partieJavascript.js" defer></script>
 </head>
+
 <body>
     <h1>TP Données du Web - AJAX</h1>
     <hr>
@@ -18,11 +20,33 @@
     <hr>
     <div>
         <h3>Bouton 3 : Affiche le nom du du pays</h3>
-        <select name="countries" id="countrySelect">
-            <option value="Test">Test</option>
-        </select>
-        <button id="button3">Valider</button>
-    </div>
+        <select name="countries" id="countrySelect"></select>
+        <button id="button3" onclick="button3()">Valider</button>
+        <div id="countrySelectName">
 
+        </div>
+    </div>
+    <div>
+        <h3>Bouton 6</h3>
+        <button id="worldMapButton" onclick="button6()">Show world map</button>
+        <table id="worldMapCountryName" border="Show">
+            <tr>
+                <td>Name</td>
+                <td>Capital</td>
+                <td>Languages spoken</td>
+                <td>Flag</td>
+                <td>Currency</td>
+            </tr>
+            <tr style="min-height: 50px;">
+                <td id="Name"></td>
+                <td id="Capital"></td>
+                <td id="LanguagesSpoken"></td>
+                <td id="Flag"></td>
+                <td id="Currency"></td>
+            </tr>
+        </table>
+        <div id="worldMap"></div>
+    </div>
 </body>
+
 </html>
