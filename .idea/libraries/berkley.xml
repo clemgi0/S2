@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="berkley">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/berkley/dbxml.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/berkley/db.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

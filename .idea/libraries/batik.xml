@@ -1,0 +1,27 @@
+<component name="libraryTable">
+  <library name="batik">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/batik-util.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/js.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/batik-script.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/batik-swing.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/batik-svggen.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/batik-parser.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/batik-css.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/batik-dom.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/batik-bridge.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/batik-ext.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/batik-gvt.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/batik-codec.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/batik-transcoder.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/batik-awt-util.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/batik-extension.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/batik-svg-dom.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/batik-gui-util.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/batik-anim.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/lib/batik/batik-xml.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

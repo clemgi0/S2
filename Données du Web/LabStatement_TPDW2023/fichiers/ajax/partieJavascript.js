@@ -1,26 +1,27 @@
+
 const countriesXML = chargerHttpXML("../countriesTP.xml");
-const codesCountries = countriesXML.getElementsByTagName("cca2");
-const countryXSL = chargerHttpXML("../country.xsl");
 
-let mouse = {
-    x: 0,
-    y: 0
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function recupererPremierEnfantDeTypeElement(n) {
+    let x = n.firstChild;
+    while (x.nodeType !== 1) { // Test if x is an element node (and not a text node or other)
+        x = x.nextSibling;
+    }
+    return x;
 }
 
-let blueMode = false;
-let bulle = document.getElementById("bulle");
-let bulleDisplayed = false;
-
-let selectElement = document.getElementById("countrySelect");
-for (let i = 0; i < codesCountries.length; ++i) {
-    let codeCountry = codesCountries[i].innerHTML;
-    let optionElement = document.createElement('option');
-    optionElement.value = codeCountry;
-    optionElement.text = codeCountry;
-    selectElement.add(optionElement);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//change le contenu de l'ï¿½lement avec l'id "nom" avec la chaine de caractï¿½res en paramï¿½tre	  
+function setNom(nom) {
+    let elementHtmlARemplir = window.document.getElementById("id_nom_a_remplacer");
+    elementHtmlARemplir.innerHTML = nom;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//charge le fichier XML se trouvant ï¿½ l'URL relative donnï¿½ dans le paramï¿½treet le retourne
 function chargerHttpXML(xmlDocumentUrl) {
+
     let httpAjax;
 
     httpAjax = window.XMLHttpRequest ?
@@ -31,118 +32,182 @@ function chargerHttpXML(xmlDocumentUrl) {
         httpAjax.overrideMimeType('text/xml');
     }
 
-    //chargement du fichier XML à l'aide de XMLHttpRequest synchrone (le 3° paramètre est défini à false)
+    //chargement du fichier XML ï¿½ l'aide de XMLHttpRequest synchrone (le 3ï¿½ paramï¿½tre est dï¿½fini ï¿½ false)
     httpAjax.open('GET', xmlDocumentUrl, false);
     httpAjax.send();
 
     return httpAjax.responseXML;
 }
 
-function button1_2(button) {
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
+// Charge le fichier JSON se trouvant ï¿½ l'URL donnï¿½e en paramï¿½tre et le retourne
+function chargerHttpJSON(jsonDocumentUrl) {
+
+    let httpAjax;
+
+    httpAjax = window.XMLHttpRequest ?
+        new XMLHttpRequest() :
+        new ActiveXObject('Microsoft.XMLHTTP');
+
+    if (httpAjax.overrideMimeType) {
+        httpAjax.overrideMimeType('text/xml');
+    }
+
+    // chargement du fichier JSON ï¿½ l'aide de XMLHttpRequest synchrone (le 3ï¿½ paramï¿½tre est dï¿½fini ï¿½ false)
+    httpAjax.open('GET', jsonDocumentUrl, false);
+    httpAjax.send();
+
+    return eval("(" + httpAjax.responseText + ")");
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function Bouton2_ajaxEmployees(xmlDocumentUrl) {
+
+
+    let xmlDocument = chargerHttpXML(xmlDocumentUrl);
+
+    //extraction des noms ï¿½ partir du document XML (avec une feuille de style ou en javascript)
+    let lesNoms = xmlDocument.getElementsByTagName("LastName");
+
+    // Parcours de la liste des noms avec une boucle for et 
+    // construction d'une chaine de charactï¿½res contenant les noms sï¿½parï¿½s par des espaces
+    // Pour avoir la longueur d'une liste : attribut 'length'
+    // Accï¿½s au texte d'un nï¿½ud "LastName" : NOM_NOEUD.firstChild.nodeValue
+    let chaineDesNoms = "";
+    for (i = 0; i < lesNoms.length; i++) {
+        if (i > 0) {
+            chaineDesNoms = chaineDesNoms + ", ";
+        }
+        chaineDesNoms = chaineDesNoms + lesNoms[i].firstChild.nodeValue + " ";
+    }
+
+
+    // Appel (ou recopie) de la fonction setNom(...) ou bien autre faï¿½on de modifier le texte de l'ï¿½lï¿½ment "span"
+    setNom(chaineDesNoms);
+
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function Bouton3_ajaxBibliographie(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer) {
+
+    // Chargement du fichier XSL ï¿½ l'aide de XMLHttpRequest synchrone 
+    let xslDocument = chargerHttpXML(xslDocumentUrl);
+
+    //crï¿½ation d'un processuer XSL
+    let xsltProcessor = new XSLTProcessor();
+
+    // Importation du .xsl
+    xsltProcessor.importStylesheet(xslDocument);
+
+    // Chargement du fichier XML ï¿½ l'aide de XMLHttpRequest synchrone 
+    let xmlDocument = chargerHttpXML(xmlDocumentUrl);
+
+    // Crï¿½ation du document XML transformï¿½ par le XSL
+    let newXmlDocument = xsltProcessor.transformToDocument(xmlDocument);
+
+    // Recherche du parent (dont l'id est "here") de l'ï¿½lï¿½ment ï¿½ remplacer dans le document HTML courant
+    let elementHtmlParent = window.document.getElementById("id_element_a_remplacer");
+
+    // insï¿½rer l'ï¿½lement transformï¿½ dans la page html
+    elementHtmlParent.innerHTML = newXmlDocument.getElementsByTagName(baliseElementARecuperer)[0].innerHTML;
+
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function Bouton4_ajaxBibliographieAvecParametres(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, paramXSL_type_reference, id) {
+
+    // Chargement du fichier XSL ï¿½ l'aide de XMLHttpRequest synchrone 
+    let xslDocument = chargerHttpXML(xslDocumentUrl);
+
+    //crï¿½ation d'un processuer XSL
+    let xsltProcessor = new XSLTProcessor();
+
+    // Importation du .xsl
+    xsltProcessor.importStylesheet(xslDocument);
+
+    //passage du paramï¿½tre ï¿½ la feuille de style
+    xsltProcessor.setParameter("", "param_ref_type", paramXSL_type_reference);
+
+    // Chargement du fichier XML ï¿½ l'aide de XMLHttpRequest synchrone 
+    let xmlDocument = chargerHttpXML(xmlDocumentUrl);
+
+    // Crï¿½ation du document XML transformï¿½ par le XSL
+    let newXmlDocument = xsltProcessor.transformToDocument(xmlDocument);
+
+    // Recherche du parent (dont l'id est "here") de l'ï¿½lï¿½ment ï¿½ remplacer dans le document HTML courant
+    let elementHtmlParent = window.document.getElementById(id);
+
+    // insï¿½rer l'ï¿½lement transformï¿½ dans la page html
+    elementHtmlParent.innerHTML = newXmlDocument.getElementsByTagName(baliseElementARecuperer)[0].innerHTML;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function Bouton4_ajaxEmployeesTableau(xmlDocumentUrl, xslDocumentUrl) {
+    //commenter la ligne suivante qui affiche la boï¿½te de dialogue!
+    alert("Fonction ï¿½ complï¿½ter...");
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+let blueMode = false;
+document.getElementById("switchMode").addEventListener("click", (ev) => {
     blueMode = !blueMode;
-    document.body.style.backgroundColor = (blueMode ? 'blue' : 'white');
-    document.body.style.color = (blueMode ? 'white' : 'black');
-    button.innerHTML = (blueMode ? "Mode Blanc" : "Mode Bleu");
+    let bg = (blueMode ? 'blue' : 'white');
+    let color = (blueMode ? 'white' : 'black');
+    let text = (blueMode ? "Mode Blanc" : "Mode Bleu")
+    document.body.style.backgroundColor = bg;
+    document.body.style.color = color;
+    ev.target.innerHTML = text;
+});
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//button 3
+
+let codes = countriesXML.getElementsByTagName("cca2");
+
+for (let i = 0; i < codes.length; i++) {
+    option = document.createElement("option")
+    option.text = codes[i].innerHTML
+    option.value = codes[i].innerHTML;
+    document.getElementById("countrySelect").appendChild(option)
 }
 
 function button3() {
-
+    Bouton4_ajaxBibliographieAvecParametres("../countriesTP.xml", "../cherchePays.xsl", "pays", document.getElementById("countrySelect").value, "countrySelectName")
 }
 
-function button4_5() {
-    const serializer = new XMLSerializer();
-    const svgXML = chargerHttpXML("exemple.svg");
-    document.getElementById("exemple-svg").innerHTML = serializer.serializeToString(svgXML);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//button 6
 
-    document.getElementById("lesFormes").addEventListener("mousemove", (ev) => {
-        if (ev.target.attributes.title !== undefined) {
-            displayBulle(ev.target.attributes.title.value);
-        }
-        else {
-            removeBulle();
+function button6() {
+    const worldMap = chargerHttpXML("./worldHigh.svg");
+    const serializedWorldMap = new XMLSerializer();
+    document.getElementById("worldMap").innerHTML = serializedWorldMap.serializeToString(worldMap);
+    document.getElementById("worldMap").addEventListener("mouseover", (ev) => {
+        if (ev.target.attributes.countryname !== undefined) {
+            let cca2 = ev.target.attributes.id.value;
+            document.getElementById("Name").innerText = ev.target.attributes.countryname.value;
+            Bouton4_ajaxBibliographieAvecParametres("../countriesTP.xml", "../cherchePays.xsl", "capital", cca2, "Capital")
+            Bouton4_ajaxBibliographieAvecParametres("../countriesTP.xml", "../cherchePays.xsl", "languages", cca2, "LanguagesSpoken")
+            Bouton4_ajaxBibliographieAvecParametres("../countriesTP.xml", "../cherchePays.xsl", "flag", cca2, "Flag")
+            let jsonurl = "https://restcountries.com/v2/alpha/" + cca2
+            let json = chargerHttpJSON(jsonurl)
+            document.getElementById("Currency").innerText = json.currencies[0].name
         }
     })
-
-    document.getElementById("lesFormes").addEventListener("mouseleave", (ev) => {
-        removeBulle();
-    })
 }
 
-function button13() {
-    drawMap(() => {
-        document.querySelector("#map g").addEventListener("mouseover", (ev) => {
-            let land = ev.target;
-            land.style.fill = "green";
-            land.addEventListener("mouseleave", () => {
-                land.style.fill = "#CCCCCC";
-            })
-        })
-    });
-}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//part 11
 
-function button12() {
-    let rand = Math.floor(Math.random() * codesCountries.length);
-    let countryCode = codesCountries[rand].innerHTML;
 
-    let xsltProcessor = new XSLTProcessor();
-    xsltProcessor.importStylesheet(countryXSL);
-    xsltProcessor.setParameter("", "country_code", countryCode);
-    let countryXML = xsltProcessor.transformToDocument(countriesXML);
-    document.getElementById("countryToFind").innerHTML = getTagValue(countryXML, "country_name")
+let code = document.getElementById("countrySelect").value;
 
-    drawMap(() => {
-        document.querySelector("#map g").addEventListener("click", (ev) => {
-            let land = ev.target;
-            if (land.id === countryCode) {
-                land.style.fill = "green";
-                displayBulle("GAGNE !");
-            }
-            else {
-                land.style.fill = "red";
-                displayBulle("PERDU...");
-            }
-
-            land.addEventListener("mouseleave", () => {
-                removeBulle();
-            })
-        })
-    });
-}
-
-function displayBulle(text) {
-    bulle.style.display = "block";
-    bulle.innerText = text;
-    bulle.style.top = (mouse.y + 10) + "px";
-    bulle.style.left = (mouse.x + 30) + "px";
-    bulleDisplayed = true;
-}
-
-function removeBulle() {
-    bulleDisplayed = false;
-    bulle.innerHTML = "";
-    bulle.style.display = "none";
-    bulle.style.top = "0";
-    bulle.style.left = "0";
-}
-
-document.addEventListener("mousemove", (ev) => {
-    mouse.x = ev.pageX;
-    mouse.y = ev.pageY;
-
-    if (bulleDisplayed) {
-        bulle.style.top = (mouse.y + 10) + "px";
-        bulle.style.left = (mouse.x + 30) + "px";
-    }
-})
-
-function getTagValue(XML, tagName) {
-    return XML.getElementsByTagName(tagName)[0].innerHTML;
-}
-
-function drawMap(callback) {
-    const serializer = new XMLSerializer();
-    const mapXML = chargerHttpXML("worldHigh.svg");
-    document.getElementById("map").innerHTML = serializer.serializeToString(mapXML);
-
-    callback();
-}
+let xslDocument = chargerHttpXML("../cherchePays.xsl");
+let xsltProcessor = new XSLTProcessor();
+xsltProcessor.importStylesheet(xslDocument);
+xsltProcessor.setParameter("", "param_ref_type", code);
+let newXmlDocument = xsltProcessor.transformToDocument(countriesXML);
+newXmlDocument.getElementsByTagName(baliseElementARecuperer)

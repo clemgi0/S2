@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Basic">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Données du Web/editix2022/samples/plugin/basic/build/Basic.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
