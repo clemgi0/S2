@@ -22,7 +22,7 @@
                      height="40" width="60"/>
         </flag>
         <sameLanguages>
-            <xsl:apply-templates select="//languages[contains(.,$param_ref_type)]/../country_name/common_name">
+            <xsl:apply-templates select="//languages[contains(., $param_ref_type)]/../country_name/common_name"/>
         </sameLanguages>
     </xsl:template>
 </xsl:stylesheet>

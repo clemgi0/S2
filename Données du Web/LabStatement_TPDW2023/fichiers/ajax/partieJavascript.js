@@ -176,6 +176,17 @@ for (let i = 0; i < codes.length; i++) {
 
 function button3() {
     Bouton4_ajaxBibliographieAvecParametres("../countriesTP.xml", "../cherchePays.xsl", "pays", document.getElementById("countrySelect").value, "countrySelectName")
+
+    let code = document.getElementById("countrySelect").value;
+    //a FINIR LA BORDEL DE ZEUB
+    let xslDocument = chargerHttpXML("../cherchePays.xsl");
+    let xsltProcessor = new XSLTProcessor();
+    xsltProcessor.importStylesheet(xslDocument);
+    xsltProcessor.setParameter("", "param_ref_type", code);
+    let newXmlDocument = xsltProcessor.transformToDocument(countriesXML);
+    let langues = newXmlDocument.getElementsByTagName("languages")[0].innerHTML
+    console.log(langues)
+    console.log(newXmlDocument.getElementsByTagName("sameLanguages")[0])
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -198,16 +209,3 @@ function button6() {
         }
     })
 }
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//part 11
-
-
-let code = document.getElementById("countrySelect").value;
-
-let xslDocument = chargerHttpXML("../cherchePays.xsl");
-let xsltProcessor = new XSLTProcessor();
-xsltProcessor.importStylesheet(xslDocument);
-xsltProcessor.setParameter("", "param_ref_type", code);
-let newXmlDocument = xsltProcessor.transformToDocument(countriesXML);
-newXmlDocument.getElementsByTagName(baliseElementARecuperer)
