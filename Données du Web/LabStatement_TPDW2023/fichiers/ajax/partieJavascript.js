@@ -341,12 +341,8 @@ document.addEventListener("mousemove", (ev) => {
     Page.updateTooltip();
 });
 
-document.getElementById("temperatureButton").addEventListener("mouseenter", (ev) => {
+document.getElementById("temperatureButton").addEventListener("mouseenter", () => {
     Page.displayTooltip("Visualisation des temperatures maximales atteintes aujourd'hui");
-
-    ev.target.addEventListener("mouseleave", () => {
-        Page.removeTooltip();
-    })
 });
 
 document.getElementById("toggle").addEventListener("mouseenter", (ev) => {
