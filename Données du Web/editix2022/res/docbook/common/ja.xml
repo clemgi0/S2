@@ -176,7 +176,7 @@
    <l:dingbat key="nestedendquote" text="&#12303;"/>
    <l:dingbat key="singlestartquote" text="&#8216;" lang="en"/>
    <l:dingbat key="singleendquote" text="&#8217;" lang="en"/>
-   <l:dingbat key="bullet" text="&#9679;"/>
+   <l:dingbat key="tooltipt" text="&#9679;"/>
    <l:gentext key="hyphenation-character" text="-" lang="en"/>
    <l:gentext key="hyphenation-push-character-count" text="2" lang="en"/>
    <l:gentext key="hyphenation-remain-character-count" text="2" lang="en"/>

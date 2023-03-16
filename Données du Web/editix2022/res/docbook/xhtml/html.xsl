@@ -55,7 +55,7 @@
 </xsl:template>
 
 <xsl:template name="dingbat">
-  <xsl:param name="dingbat">bullet</xsl:param>
+  <xsl:param name="dingbat">tooltipt</xsl:param>
   <xsl:call-template name="dingbat.characters">
     <xsl:with-param name="dingbat" select="$dingbat"/>
   </xsl:call-template>
@@ -64,9 +64,9 @@
 <xsl:template name="dingbat.characters">
   <!-- now that I'm using the real serializer, all that dingbat malarky -->
   <!-- isn't necessary anymore... -->
-  <xsl:param name="dingbat">bullet</xsl:param>
+  <xsl:param name="dingbat">tooltipt</xsl:param>
   <xsl:choose>
-    <xsl:when test="$dingbat='bullet'">&#8226;</xsl:when>
+    <xsl:when test="$dingbat='tooltipt'">&#8226;</xsl:when>
     <xsl:when test="$dingbat='copyright'">&#169;</xsl:when>
     <xsl:when test="$dingbat='trademark'">&#8482;</xsl:when>
     <xsl:when test="$dingbat='trade'">&#8482;</xsl:when>

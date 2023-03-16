@@ -70,7 +70,7 @@ Original highlight.js style (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
 }
 
 .hljs-built_in,
-.hljs-bullet,
+.hljs-tooltipt,
 .hljs-code,
 .hljs-addition {
   color: #397300;

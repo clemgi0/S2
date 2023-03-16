@@ -1,52 +1,40 @@
 <!doctype html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>TP Données du Web - AJAX</title>
     <script type="text/javascript" src="partieJavascript.js" defer></script>
+    <link rel="stylesheet" href="stylesheet.css">
 </head>
-
 <body>
-    <h1>TP Données du Web - AJAX</h1>
-    <hr>
-    <div>
-        <h3>Bouton 1 / Bouton 2 : Changement du style de la page</h3>
-        <button id="switchMode">Mode bleu</button>
+    <div id="loadingPage">
+        <img src="https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca_w200.gif" alt="loading" id="loading"/><br>
+        Les données sont en cours d'acheminement depuis diverses API. <br><br>
+        C'est un peu long, mais ce sera plus fluide pour la navigation !
     </div>
-    <hr>
-    <div>
-        <h3>Bouton 3 : Affiche le nom du du pays</h3>
-        <select name="countries" id="countrySelect"></select>
-        <button id="button3" onclick="button3()">Valider</button>
-        <div id="countrySelectName">
-
+    <div id="side">
+        <div id="container">
+            <div id="toggle" onclick="Page.switchColor()">
+                <div id="toggleInside"></div>
+            </div>
+            <span>Sélectionner un pays</span><br>
+            <select id="countrySelect"></select>
+            <div class="button" onclick="Page.selectCountryCode()" onmouseleave="Map.unfocusCountry()">Chercher</div><br>
+            <div class="button" onclick="Game.start()">Jouer à GeoGuessr</div>
+            <div id="gameText">
+                <div id="gameExplanation"></div>
+                <div id="countryToFind"></div>
+                <span><span id="nbTries">0</span> tentative(s)</span>
+                <div class="button" style="width:75%" onclick="Game.stop()">Arrêter</div>
+            </div><br/>
+            <div class="button" id="temperatureButton" onclick="Map.colorWithTemperatureGradient()">Visualiser les températures</div>
         </div>
-    </div>
-    <div>
-        <h3>Bouton 6</h3>
-        <button id="worldMapButton" onclick="button6()">Show world map</button>
-        <table id="worldMapCountryName" border="Show">
-            <tr>
-                <td>Name</td>
-                <td>Capital</td>
-                <td>Languages spoken</td>
-                <td>Flag</td>
-                <td>Currency</td>
-            </tr>
-            <tr style="min-height: 50px;">
-                <td id="Name"></td>
-                <td id="Capital"></td>
-                <td id="LanguagesSpoken"></td>
-                <td id="Flag"></td>
-                <td id="Currency"></td>
-            </tr>
-        </table>
-        <div id="worldMap"></div>
-    </div>
-</body>
 
+    </div>
+    <div id="map"></div>
+    <div id="tooltip"></div>
+</body>
 </html>

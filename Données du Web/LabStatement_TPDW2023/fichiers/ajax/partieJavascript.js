@@ -1,213 +1,364 @@
+class Page {
+    static blueMode;
+    static mouse;
+    static tooltip;
+    static countriesCodes;
 
-const countriesXML = chargerHttpXML("../countriesTP.xml");
+    static init() {
+        Page.blueMode = false;
+        Page.mouse = {
+            x: 0,
+            y: 0
+        };
+        Page.tooltip = {
+            element: document.getElementById("tooltip"),
+            displayed: false
+        };
+        Page.countriesCodes = XML.countriesXML.getElementsByTagName("cca2");
+        Page.generateCountrySelect();
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-function recupererPremierEnfantDeTypeElement(n) {
-    let x = n.firstChild;
-    while (x.nodeType !== 1) { // Test if x is an element node (and not a text node or other)
-        x = x.nextSibling;
-    }
-    return x;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//change le contenu de l'ï¿½lement avec l'id "nom" avec la chaine de caractï¿½res en paramï¿½tre	  
-function setNom(nom) {
-    let elementHtmlARemplir = window.document.getElementById("id_nom_a_remplacer");
-    elementHtmlARemplir.innerHTML = nom;
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//charge le fichier XML se trouvant ï¿½ l'URL relative donnï¿½ dans le paramï¿½treet le retourne
-function chargerHttpXML(xmlDocumentUrl) {
-
-    let httpAjax;
-
-    httpAjax = window.XMLHttpRequest ?
-        new XMLHttpRequest() :
-        new ActiveXObject('Microsoft.XMLHTTP');
-
-    if (httpAjax.overrideMimeType) {
-        httpAjax.overrideMimeType('text/xml');
+        Map.init();
+        Map.initCountriesData();
     }
 
-    //chargement du fichier XML ï¿½ l'aide de XMLHttpRequest synchrone (le 3ï¿½ paramï¿½tre est dï¿½fini ï¿½ false)
-    httpAjax.open('GET', xmlDocumentUrl, false);
-    httpAjax.send();
+    static switchColor() {
+        const defaultColor = "#121212";
+        const blueColor = "#244A66FF";
 
-    return httpAjax.responseXML;
-}
+        Page.blueMode = !Page.blueMode;
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  
-// Charge le fichier JSON se trouvant ï¿½ l'URL donnï¿½e en paramï¿½tre et le retourne
-function chargerHttpJSON(jsonDocumentUrl) {
-
-    let httpAjax;
-
-    httpAjax = window.XMLHttpRequest ?
-        new XMLHttpRequest() :
-        new ActiveXObject('Microsoft.XMLHTTP');
-
-    if (httpAjax.overrideMimeType) {
-        httpAjax.overrideMimeType('text/xml');
-    }
-
-    // chargement du fichier JSON ï¿½ l'aide de XMLHttpRequest synchrone (le 3ï¿½ paramï¿½tre est dï¿½fini ï¿½ false)
-    httpAjax.open('GET', jsonDocumentUrl, false);
-    httpAjax.send();
-
-    return eval("(" + httpAjax.responseText + ")");
-}
-
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function Bouton2_ajaxEmployees(xmlDocumentUrl) {
-
-
-    let xmlDocument = chargerHttpXML(xmlDocumentUrl);
-
-    //extraction des noms ï¿½ partir du document XML (avec une feuille de style ou en javascript)
-    let lesNoms = xmlDocument.getElementsByTagName("LastName");
-
-    // Parcours de la liste des noms avec une boucle for et 
-    // construction d'une chaine de charactï¿½res contenant les noms sï¿½parï¿½s par des espaces
-    // Pour avoir la longueur d'une liste : attribut 'length'
-    // Accï¿½s au texte d'un nï¿½ud "LastName" : NOM_NOEUD.firstChild.nodeValue
-    let chaineDesNoms = "";
-    for (i = 0; i < lesNoms.length; i++) {
-        if (i > 0) {
-            chaineDesNoms = chaineDesNoms + ", ";
+        document.body.style.backgroundColor = (Page.blueMode ? blueColor : defaultColor);
+        if (Page.blueMode) {
+            document.getElementById("toggleInside").classList.add("blue");
+            Page.displayTooltip("Desactiver l'affichage de la mer");
+        } else {
+            document.getElementById("toggleInside").classList.remove("blue");
+            Page.displayTooltip("Activer l'affichage de la mer");
         }
-        chaineDesNoms = chaineDesNoms + lesNoms[i].firstChild.nodeValue + " ";
     }
 
+    static generateCountrySelect() {
+        const selectElement = document.getElementById("countrySelect");
+        for (let i = 0; i < Page.countriesCodes.length; ++i) {
+            const codeCountry = Page.countriesCodes[i].innerHTML;
+            const optionElement = document.createElement('option');
+            optionElement.value = codeCountry;
+            optionElement.text = codeCountry;
+            selectElement.add(optionElement);
+        }
+    }
 
-    // Appel (ou recopie) de la fonction setNom(...) ou bien autre faï¿½on de modifier le texte de l'ï¿½lï¿½ment "span"
-    setNom(chaineDesNoms);
+    static selectCountryCode() {
+        const countryCode = document.getElementById("countrySelect").value;
 
+        if (Map.focusedCountry !== null)
+            Map.unfocusCountry();
+
+        Map.focusedCountry = countryCode;
+
+        const countryDOM = document.querySelector("#map path[id=" + countryCode + "]");
+        countryDOM.style.fill = "#494949";
+
+        Page.displayTooltip(Map.getCountryTooltipContent(countryCode));
+    }
+
+    static displayTooltip(content) {
+        const tooltipDOM = Page.tooltip.element;
+        tooltipDOM.style.display = "block";
+        tooltipDOM.innerHTML = content;
+        Page.tooltip.displayed = true;
+        Page.updateTooltip();
+    }
+
+    static removeTooltip() {
+        Page.tooltip.displayed = false;
+
+        const tooltipDOM = Page.tooltip.element;
+        tooltipDOM.innerHTML = "";
+        tooltipDOM.style.display = "none";
+        tooltipDOM.style.top = "0";
+        tooltipDOM.style.left = "0";
+    }
+
+    static updateTooltip() {
+        if (Page.tooltip.displayed) {
+            const tooltipDOM = Page.tooltip.element;
+            const offsetTop = (Page.mouse.y > window.innerHeight / 2 ? -60 - tooltipDOM.offsetHeight : 0);
+            const offsetLeft = (Page.mouse.x > 3 * window.innerWidth / 4 ? -20 - tooltipDOM.offsetWidth : 0);
+            tooltipDOM.style.top = (Page.mouse.y + 10 + offsetTop) + "px";
+            tooltipDOM.style.left = (Page.mouse.x + 30 + offsetLeft) + "px";
+        }
+    }
+}
+
+class Map {
+    static focusedCountry;
+    static temperatureVisual;
+    static memoCountries = {};
+
+    static init() {
+        Map.focusedCountry = null;
+        Map.temperatureVisual = false;
+        Map.draw();
+        document.querySelector("#map g").addEventListener("mouseover", Map.hoverCountryEvent);
+    }
+
+    static draw() {
+        const serializer = new XMLSerializer();
+        const mapXML = XML.load("worldHigh.svg");
+        document.getElementById("map").innerHTML = serializer.serializeToString(mapXML);
+    }
+
+    static initCountriesData() {
+        document.querySelectorAll("#map path").forEach((countryDOM) => {
+            const countryCode = countryDOM.id;
+            const countryXML = XML.getCountryXML(countryCode);
+            const countryJSON = JSON.load("https://restcountries.com/v2/alpha/" + countryCode);
+            const currency = (!countryJSON['currencies'] ? "" : countryJSON['currencies'][0])
+
+            let temperature = NaN;
+            const latitude = XML.getTagValue(countryXML, "latitude");
+            const longitude = XML.getTagValue(countryXML, "longitude");
+            if (latitude && longitude) {
+                const url = "https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&longitude=" + longitude + "&hourly=temperature_2m&forecast_days=1";
+                const temperatureJSON = JSON.load(url);
+                temperature = (!temperatureJSON['hourly'] ? NaN : Math.max(...temperatureJSON['hourly']['temperature_2m']));
+            }
+
+            Map.memoCountries[countryCode] = {
+                name: XML.getTagValue(countryXML, 'name'),
+                capital: XML.getTagValue(countryXML, 'capital'),
+                languages: XML.getTagValue(countryXML, 'languages'),
+                flag: XML.getTagValue(countryXML, 'flag').trim(),
+                currency: currency,
+                temperature: temperature
+            };
+        });
+        document.getElementById("loadingPage").style.display = "none";
+    }
+
+    static hoverCountryEvent(e) {
+        const countryDOM = e.target;
+        const countryCode = countryDOM.id;
+
+        if (Map.focusedCountry !== countryCode) {
+            if (Map.focusedCountry !== null) {
+                Map.unfocusCountry();
+            }
+            Map.focusCountry(countryDOM);
+        }
+
+        countryDOM.addEventListener('click', Map.clickCountryEvent);
+
+        countryDOM.addEventListener("mouseleave", Map.unfocusCountry);
+    }
+
+    static clickCountryEvent(e) {
+        const countryDOM = e.target;
+        const countryCode = countryDOM.id;
+
+        if (Game.started && !Game.win && !Game.guesses.includes(countryCode))
+            Game.guessCountry(countryDOM);
+    }
+
+    static focusCountry(countryDOM) {
+        const countryCode = countryDOM.id;
+        Map.focusedCountry = countryCode;
+
+        if (!Game.started || !Game.guesses.includes(countryCode))
+            countryDOM.style.fill = "#494949";
+
+        if (Game.started && !Game.win && !Game.guesses.includes(countryCode))
+            Page.displayTooltip("???");
+        else
+            Page.displayTooltip(Map.getCountryTooltipContent(countryCode));
+    }
+
+    static unfocusCountry() {
+        if (Map.focusedCountry !== null) {
+            const countryDOM = document.querySelector("#map path[id=" + Map.focusedCountry + "]");
+            Map.focusedCountry = null;
+            Page.removeTooltip();
+
+            // On remet la couleur à l'origine, sauf si le pays a été coloré pendant une partie de GeoGuessr
+            if (!Game.started || !Game.guesses.includes(countryDOM.id)) {
+                if (Map.temperatureVisual) {
+                    console.log(Map.memoCountries[countryDOM.id].temperature)
+                    countryDOM.style.fill = Map.getColorFromTemperature(Map.memoCountries[countryDOM.id].temperature);
+                }
+                else
+                    countryDOM.style.fill = "#CCCCCC";
+            }
+        }
+
+    }
+
+    static getCountryTooltipContent(countryCode) {
+        const data = Map.memoCountries[countryCode];
+
+        let content = "<h2>" + data.name + " " + data.flag + "</h2>";
+        content += "<h3>" + data.capital + "</h3>";
+        content += "<b>Langues :</b> " + data.languages;
+        content += "<br/><b>Monnaie :</b> " + data.currency['name'] + " (" + data.currency['symbol'] + ")";
+        content += "<br><b>Temperature maximale aujourd'hui :</b> " + data.temperature + "&#8451;";
+
+        return content;
+    }
+
+    static colorWithTemperatureGradient() {
+        Map.temperatureVisual = true;
+
+        document.querySelectorAll("#map path").forEach((countryDOM) => {
+            let temperature = Map.memoCountries[countryDOM.id].temperature;
+            countryDOM.style.fill = Map.getColorFromTemperature(temperature);
+        });
+    }
+
+    static getColorFromTemperature(temperature) {
+        const tempMin = -30;
+        const tempMax = 40;
+        const gradient = ["#ff6000", "#ff6a0b", "#ff7315", "#ff7d20", "#ff862a", "#ff9035", "#ff9a3f", "#ffa34a", "#ffad55", "#ffb65f", "#ffc06a", "#ffc974", "#ffd37f", "#ffd585", "#ffd78c", "#ffda92", "#ffdc99", "#ffde9f", "#ffe1a5", "#ffe3ac", "#ffe5b2", "#ffe7b9", "#ffeabf", "#ffecc6", "#ffeecc", "#ffefd0", "#fff1d4", "#fff2d9", "#fff4dd", "#fff5e1", "#fff7e6", "#fff8ea", "#fff9ee", "#fffbf2", "#fffcf7", "#fffefb", "#ffffff", "#fbfcff", "#f7f9ff", "#f2f7ff", "#eef4ff", "#eaf1ff", "#e6eeff", "#e1ebff", "#dde8ff", "#d9e6ff", "#d4e3ff", "#d0e0ff", "#ccddff", "#c6d9ff", "#bfd5ff", "#b9d1ff", "#b2ccff", "#acc8ff", "#a5c4ff", "#9fc0ff", "#99bcff", "#92b7ff", "#8cb3ff", "#85afff", "#7fabff", "#74aaff", "#6aa9ff", "#5fa8ff", "#55a7ff", "#4aa6ff", "#3fa5ff", "#35a4ff", "#2aa3ff", "#20a2ff", "#15a1ff", "#0ba0ff", "#009fff"];
+
+        if (isNaN(temperature))
+            return "#ccc";
+
+        temperature = Math.max(Math.min(temperature, tempMax), tempMin);
+        const index = gradient.length - Math.floor((temperature-tempMin)*gradient.length/(Math.abs(tempMin)+Math.abs(tempMax))) - 1;
+        return gradient[index];
+    }
 
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function Bouton3_ajaxBibliographie(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer) {
+class XML {
+    static countriesXML = XML.load("../countriesTP.xml");
+    static countryXSL = XML.load("../country.xsl");
 
-    // Chargement du fichier XSL ï¿½ l'aide de XMLHttpRequest synchrone 
-    let xslDocument = chargerHttpXML(xslDocumentUrl);
+    static load(url) {
+        let httpAjax;
 
-    //crï¿½ation d'un processuer XSL
-    let xsltProcessor = new XSLTProcessor();
+        httpAjax = window.XMLHttpRequest ?
+            new XMLHttpRequest() :
+            new ActiveXObject('Microsoft.XMLHTTP');
 
-    // Importation du .xsl
-    xsltProcessor.importStylesheet(xslDocument);
+        if (httpAjax.overrideMimeType) {
+            httpAjax.overrideMimeType('text/xml');
+        }
 
-    // Chargement du fichier XML ï¿½ l'aide de XMLHttpRequest synchrone 
-    let xmlDocument = chargerHttpXML(xmlDocumentUrl);
+        httpAjax.open('GET', url, false);
+        httpAjax.send();
 
-    // Crï¿½ation du document XML transformï¿½ par le XSL
-    let newXmlDocument = xsltProcessor.transformToDocument(xmlDocument);
+        return httpAjax.responseXML;
+    }
 
-    // Recherche du parent (dont l'id est "here") de l'ï¿½lï¿½ment ï¿½ remplacer dans le document HTML courant
-    let elementHtmlParent = window.document.getElementById("id_element_a_remplacer");
+    static getCountryXML(countryCode) {
+        const xsltProcessor = new XSLTProcessor();
+        xsltProcessor.importStylesheet(XML.countryXSL);
+        xsltProcessor.setParameter("", "country_code", countryCode);
+        return xsltProcessor.transformToDocument(XML.countriesXML);
+    }
 
-    // insï¿½rer l'ï¿½lement transformï¿½ dans la page html
-    elementHtmlParent.innerHTML = newXmlDocument.getElementsByTagName(baliseElementARecuperer)[0].innerHTML;
-
-
+    static getTagValue(XML, tagName) {
+        return XML.getElementsByTagName(tagName)[0].innerHTML;
+    }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function Bouton4_ajaxBibliographieAvecParametres(xmlDocumentUrl, xslDocumentUrl, baliseElementARecuperer, paramXSL_type_reference, id) {
+class JSON {
+    static load(url) {
+        let httpAjax;
 
-    // Chargement du fichier XSL ï¿½ l'aide de XMLHttpRequest synchrone 
-    let xslDocument = chargerHttpXML(xslDocumentUrl);
+        httpAjax = window.XMLHttpRequest ?
+            new XMLHttpRequest() :
+            new ActiveXObject('Microsoft.XMLHTTP');
 
-    //crï¿½ation d'un processuer XSL
-    let xsltProcessor = new XSLTProcessor();
+        if (httpAjax.overrideMimeType) {
+            httpAjax.overrideMimeType('text/json');
+        }
 
-    // Importation du .xsl
-    xsltProcessor.importStylesheet(xslDocument);
+        httpAjax.open('GET', url, false);
+        httpAjax.send();
 
-    //passage du paramï¿½tre ï¿½ la feuille de style
-    xsltProcessor.setParameter("", "param_ref_type", paramXSL_type_reference);
-
-    // Chargement du fichier XML ï¿½ l'aide de XMLHttpRequest synchrone 
-    let xmlDocument = chargerHttpXML(xmlDocumentUrl);
-
-    // Crï¿½ation du document XML transformï¿½ par le XSL
-    let newXmlDocument = xsltProcessor.transformToDocument(xmlDocument);
-
-    // Recherche du parent (dont l'id est "here") de l'ï¿½lï¿½ment ï¿½ remplacer dans le document HTML courant
-    let elementHtmlParent = window.document.getElementById(id);
-
-    // insï¿½rer l'ï¿½lement transformï¿½ dans la page html
-    elementHtmlParent.innerHTML = newXmlDocument.getElementsByTagName(baliseElementARecuperer)[0].innerHTML;
+        return eval("(" + httpAjax.responseText + ")");
+    }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-function Bouton4_ajaxEmployeesTableau(xmlDocumentUrl, xslDocumentUrl) {
-    //commenter la ligne suivante qui affiche la boï¿½te de dialogue!
-    alert("Fonction ï¿½ complï¿½ter...");
+class Game {
+    static started;
+    static country;
+    static guesses;
+    static win;
+
+    static init() {
+        Game.started = false;
+        Game.country = null;
+        Game.guesses = [];
+        Game.win = false;
+    }
+
+    static start() {
+        Game.init();
+        Game.started = true;
+        Game.country = Page.countriesCodes[Math.floor(Math.random() * Page.countriesCodes.length)].innerHTML;
+
+        const countryXML = XML.getCountryXML(Game.country);
+        document.getElementById("map").classList.add("game")
+        document.getElementById("gameExplanation").innerText = "Vous devez trouver le pays";
+        document.getElementById("countryToFind").innerHTML = XML.getTagValue(countryXML, "name")
+        document.getElementById("nbTries").innerText = "0";
+        document.getElementById("gameText").style.display = "block";
+
+        Map.init();
+    }
+
+    static stop() {
+        Game.init();
+        document.getElementById("map").classList.remove("game")
+        document.getElementById("gameText").style.display = "none";
+        Map.init();
+    }
+
+    static guessCountry(countryDOM) {
+        const countryCode = countryDOM.id;
+
+        Game.guesses.push(countryCode);
+        document.getElementById("nbTries").innerText = Game.guesses.length;
+
+        if (countryCode === Game.country) {
+            Game.win = true;
+            countryDOM.style.fill = "green";
+            document.getElementById("gameExplanation").innerText = "Vous avez decouvert le pays";
+            document.getElementById("countryToFind").style.color = "green";
+            Page.displayTooltip("Bravo ! Vous l'avez eu en " + Game.guesses.length + " tentative(s) !" + Map.getCountryTooltipContent(countryCode));
+        } else {
+            countryDOM.style.fill = "red";
+            Page.displayTooltip(Map.getCountryTooltipContent(countryCode))
+        }
+    }
 }
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-let blueMode = false;
-document.getElementById("switchMode").addEventListener("click", (ev) => {
-    blueMode = !blueMode;
-    let bg = (blueMode ? 'blue' : 'white');
-    let color = (blueMode ? 'white' : 'black');
-    let text = (blueMode ? "Mode Blanc" : "Mode Bleu")
-    document.body.style.backgroundColor = bg;
-    document.body.style.color = color;
-    ev.target.innerHTML = text;
+document.addEventListener("mousemove", (ev) => {
+    Page.mouse.x = ev.pageX;
+    Page.mouse.y = ev.pageY;
+    Page.updateTooltip();
 });
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//button 3
+document.getElementById("temperatureButton").addEventListener("mouseenter", (ev) => {
+    Page.displayTooltip("Visualisation des temperatures maximales atteintes aujourd'hui");
 
-let codes = countriesXML.getElementsByTagName("cca2");
-
-for (let i = 0; i < codes.length; i++) {
-    option = document.createElement("option")
-    option.text = codes[i].innerHTML
-    option.value = codes[i].innerHTML;
-    document.getElementById("countrySelect").appendChild(option)
-}
-
-function button3() {
-    Bouton4_ajaxBibliographieAvecParametres("../countriesTP.xml", "../cherchePays.xsl", "pays", document.getElementById("countrySelect").value, "countrySelectName")
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//button 6
-
-function button6() {
-    const worldMap = chargerHttpXML("./worldHigh.svg");
-    const serializedWorldMap = new XMLSerializer();
-    document.getElementById("worldMap").innerHTML = serializedWorldMap.serializeToString(worldMap);
-    document.getElementById("worldMap").addEventListener("mouseover", (ev) => {
-        if (ev.target.attributes.countryname !== undefined) {
-            let cca2 = ev.target.attributes.id.value;
-            document.getElementById("Name").innerText = ev.target.attributes.countryname.value;
-            Bouton4_ajaxBibliographieAvecParametres("../countriesTP.xml", "../cherchePays.xsl", "capital", cca2, "Capital")
-            Bouton4_ajaxBibliographieAvecParametres("../countriesTP.xml", "../cherchePays.xsl", "languages", cca2, "LanguagesSpoken")
-            Bouton4_ajaxBibliographieAvecParametres("../countriesTP.xml", "../cherchePays.xsl", "flag", cca2, "Flag")
-            let jsonurl = "https://restcountries.com/v2/alpha/" + cca2
-            let json = chargerHttpJSON(jsonurl)
-            document.getElementById("Currency").innerText = json.currencies[0].name
-        }
+    ev.target.addEventListener("mouseleave", () => {
+        Page.removeTooltip();
     })
-}
+});
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//part 11
+document.getElementById("toggle").addEventListener("mouseenter", (ev) => {
+    if (Page.blueMode)
+        Page.displayTooltip("Desactiver l'affichage de la mer");
+    else
+        Page.displayTooltip("Activer l'affichage de la mer");
+
+    ev.target.addEventListener("mouseleave", () => {
+        Page.removeTooltip();
+    })
+});
 
 
-let code = document.getElementById("countrySelect").value;
-
-let xslDocument = chargerHttpXML("../cherchePays.xsl");
-let xsltProcessor = new XSLTProcessor();
-xsltProcessor.importStylesheet(xslDocument);
-xsltProcessor.setParameter("", "param_ref_type", code);
-let newXmlDocument = xsltProcessor.transformToDocument(countriesXML);
-newXmlDocument.getElementsByTagName(baliseElementARecuperer)
+Page.init();

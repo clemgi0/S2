@@ -27,10 +27,10 @@
 </xsl:template>
 
 <xsl:template name="dingbat">
-  <xsl:param name="dingbat">bullet</xsl:param>
+  <xsl:param name="dingbat">tooltipt</xsl:param>
   <xsl:variable name="symbol">
     <xsl:choose>
-      <xsl:when test="$dingbat='bullet'">o</xsl:when>
+      <xsl:when test="$dingbat='tooltipt'">o</xsl:when>
       <xsl:when test="$dingbat='copyright'">&#x00A9;</xsl:when>
       <xsl:when test="$dingbat='trademark'">&#x2122;</xsl:when>
       <xsl:when test="$dingbat='trade'">&#x2122;</xsl:when>

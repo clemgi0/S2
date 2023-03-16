@@ -46,7 +46,7 @@
 }
 
 .hljs-string,
-.hljs-bullet {
+.hljs-tooltipt {
   color: #a2fca2;
 }
 
@@ -62,7 +62,7 @@
 
 .hljs-number,
 .hljs-symbol,
-.hljs-bullet {
+.hljs-tooltipt {
   color: #d36363;
 }
 

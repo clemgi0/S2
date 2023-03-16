@@ -53,7 +53,7 @@ Visual Studio-like style based on original C# coloring by Jason Diamond <jason@d
 }
 
 .hljs-symbol,
-.hljs-bullet,
+.hljs-tooltipt,
 .hljs-link {
   color: #00b0e8;
 }

@@ -99,7 +99,7 @@
       <fo:block>
         <xsl:choose>
           <xsl:when test="$itemsymbol='disc'">&#x2022;</xsl:when>
-          <xsl:when test="$itemsymbol='bullet'">&#x2022;</xsl:when>
+          <xsl:when test="$itemsymbol='tooltipt'">&#x2022;</xsl:when>
           <!-- why do these symbols not work? -->
           <!--
           <xsl:when test="$itemsymbol='circle'">&#x2218;</xsl:when>
@@ -753,7 +753,7 @@
   <fo:list-item xsl:use-attribute-sets="list.item.spacing">
     <fo:list-item-label end-indent="label-end()">
       <fo:block id="{$id}">
-        <!-- dwc: fix for one step procedures. Use a bullet if there's no step 2 -->
+        <!-- dwc: fix for one step procedures. Use a tooltipt if there's no step 2 -->
         <xsl:choose>
           <xsl:when test="count(../step) = 1">
             <xsl:text>&#x2022;</xsl:text>

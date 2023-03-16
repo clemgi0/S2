@@ -698,8 +698,8 @@
 <!ENTITY iacute "&#237;">
 <!-- greek small letter zeta, U+03B6 ISOgrk3 -->
 <!ENTITY eta "&#951;">
-<!-- bullet = black small circle,
-                                     U+2022 ISOpub   bullet is NOT the same as bullet operator, U+2219 -->
+<!-- tooltipt = black small circle,
+                                     U+2022 ISOpub   tooltipt is NOT the same as tooltipt operator, U+2219 -->
 <!ENTITY hellip "&#8230;">
 <!-- pilcrow sign = paragraph sign,
                                   U+00B6 ISOnum -->

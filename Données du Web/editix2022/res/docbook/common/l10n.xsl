@@ -212,7 +212,7 @@
 </xsl:template>
 
 <xsl:template name="gentext.dingbat">
-  <xsl:param name="dingbat">bullet</xsl:param>
+  <xsl:param name="dingbat">tooltipt</xsl:param>
   <xsl:param name="lang">
     <xsl:call-template name="l10n.language"/>
   </xsl:param>
