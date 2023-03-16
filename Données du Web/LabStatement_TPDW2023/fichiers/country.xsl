@@ -17,6 +17,14 @@
                 <xsl:if test="position() != last()">, </xsl:if>
             </xsl:for-each>
         </languages>
+        
+        <languageSolo>
+            <xsl:apply-templates select="//cca2[text() = $country_code]/../../languages/*"/>
+        </languageSolo>
+        <paysMemeLangue>
+            <xsl:apply-templates select='//languages[contains($country_code, ./*) and ./* != "undefined"]/../country_name/common_name'/>
+        </paysMemeLangue>
+        
         <flag>
             <img src="https://www.geonames.org/flags/x/{translate($country_code, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')}.gif"
                  height="20" width="30"/>

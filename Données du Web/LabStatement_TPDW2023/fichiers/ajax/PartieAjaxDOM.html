@@ -1,17 +1,20 @@
 <!doctype html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>TP Données du Web - AJAX</title>
     <script type="text/javascript" src="partieJavascript.js" defer></script>
     <link rel="stylesheet" href="stylesheet.css">
 </head>
+
 <body>
     <div id="loadingPage">
-        <img src="https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca_w200.gif" alt="loading" id="loading"/><br>
+        <img src="https://i.gifer.com/origin/34/34338d26023e5515f6cc8969aa027bca_w200.gif" alt="loading"
+            id="loading" /><br>
         Les données sont en cours d'acheminement depuis diverses API. <br><br>
         C'est un peu long, mais ce sera plus fluide pour la navigation !
     </div>
@@ -22,19 +25,24 @@
             </div>
             <span>Sélectionner un pays</span><br>
             <select id="countrySelect"></select>
-            <div class="button" onclick="Page.selectCountryCode()" onmouseleave="Map.unfocusCountry()">Chercher</div><br>
+            <div class="button" onclick="Page.selectCountryCode()" onmouseleave="Map.unfocusCountry()">Chercher</div>
+            <br>
+            <div class="button" onclick="Page.selectCountryLanguages()">Pays parlant une des langues</div>
+            <br>
             <div class="button" onclick="Game.start()">Jouer à GeoGuessr</div>
             <div id="gameText">
                 <div id="gameExplanation"></div>
                 <div id="countryToFind"></div>
                 <span><span id="nbTries">0</span> tentative(s)</span>
                 <div class="button" style="width:75%" onclick="Game.stop()">Arrêter</div>
-            </div><br/>
-            <div class="button" id="temperatureButton" onclick="Map.colorWithTemperatureGradient()">Visualiser les températures</div>
+            </div><br />
+            <div class="button" id="temperatureButton" onclick="Map.colorWithTemperatureGradient()">Visualiser les
+                températures</div>
         </div>
 
     </div>
     <div id="map"></div>
     <div id="tooltip"></div>
 </body>
+
 </html>

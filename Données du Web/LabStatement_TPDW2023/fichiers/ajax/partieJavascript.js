@@ -1,8 +1,8 @@
 class Page {
-    static blueMode;        // True si le mode bleu est activé
-    static mouse;           // Contient les coordonnées de la souris
-    static tooltip;         // Objet qui contient le DOM de l'infobulle et s'il est affiché
-    static countriesCodes;  // Nœuds XML des codes cca2 des pays (il faut faire innerHTML pour récupérer la valeur)
+    static blueMode;        // True si le mode bleu est activï¿½
+    static mouse;           // Contient les coordonnï¿½es de la souris
+    static tooltip;         // Objet qui contient le DOM de l'infobulle et s'il est affichï¿½
+    static countriesCodes;  // Nï¿½uds XML des codes cca2 des pays (il faut faire innerHTML pour rï¿½cupï¿½rer la valeur)
 
     // Initialise la page
     static init() {
@@ -20,7 +20,7 @@ class Page {
 
         Map.init();
 
-        // On attend un peu pour laisser le temps à la page de chargement de se charger
+        // On attend un peu pour laisser le temps ï¿½ la page de chargement de se charger
         // initCountriesData() prend beaucoup de temps
         window.setTimeout(Map.getCountriesData, 500);
     }
@@ -42,7 +42,7 @@ class Page {
         }
     }
 
-    // Génère l'élément select contenant les codes des pays
+    // Gï¿½nï¿½re l'ï¿½lï¿½ment select contenant les codes des pays
     static generateCountrySelect() {
         const selectElement = document.getElementById("countrySelect");
         for (let i = 0; i < Page.countriesCodes.length; ++i) {
@@ -54,18 +54,35 @@ class Page {
         }
     }
 
-    // Exécuté quand l'utilisateur cherche un code pays dans le select
+    // Exï¿½cutï¿½ quand l'utilisateur cherche un code pays dans le select
     static selectCountryCode() {
         const countryCode = document.getElementById("countrySelect").value;
         const countryDOM = document.querySelector("#map path[id=" + countryCode + "]");
 
-        // Si un pays était focus, on enlève le focus
+        // Si un pays ï¿½tait focus, on enlï¿½ve le focus
         if (Map.focusedCountry !== null)
             Map.unfocusCountry();
 
         // On focus le nouveau pays
         Map.focusCountry(countryDOM);
     }
+
+    static selectCountryLanguages() {
+        const countryCode = document.getElementById("countrySelect").value;
+        const countryXML = XML.getCountryXML(countryCode);
+
+        // On rÃ©cupÃ¨re les langues parlÃ©es par le pays sÃ©lectionnÃ©
+        const languages = XML.getTagValue(countryXML, "languageSolo");
+
+        // On rÃ©cupÃ¨re les pays parlants les mÃªmes langues
+        const countryXML2 = XML.getCountryXML(languages);
+
+        const pays = countryXML2.getElementsByTagName("paysMemeLangue")[0].innerHTML;
+        console.log(pays)
+
+
+    }
+
 
     // Affiche l'infobulle avec un contenu (HTML ou Text)
     static displayTooltip(content) {
@@ -74,7 +91,7 @@ class Page {
         tooltipDOM.innerHTML = content;
         Page.tooltip.displayed = true;
 
-        // Met à jour les coordonnées de l'infobulle
+        // Met ï¿½ jour les coordonnï¿½es de l'infobulle
         Page.updateTooltip();
     }
 
@@ -89,7 +106,7 @@ class Page {
         tooltipDOM.style.left = "0";
     }
 
-    // Modifie la position de l'infobulle pour qu'elle suive la souris si elle est activée
+    // Modifie la position de l'infobulle pour qu'elle suive la souris si elle est activï¿½e
     static updateTooltip() {
         if (Page.tooltip.displayed) {
             const tooltipDOM = Page.tooltip.element;
@@ -102,9 +119,9 @@ class Page {
 }
 
 class Map {
-    static focusedCountry;      // Code du pays qui est focus sur la map (peut être null)
-    static temperatureVisual;   // True si la visualisation de la température est activée
-    static memoCountries = {};  // Stocke les informations des pays récupérées du fichier XML et des API
+    static focusedCountry;      // Code du pays qui est focus sur la map (peut ï¿½tre null)
+    static temperatureVisual;   // True si la visualisation de la tempï¿½rature est activï¿½e
+    static memoCountries = {};  // Stocke les informations des pays rï¿½cupï¿½rï¿½es du fichier XML et des API
 
     // (Re) initialise la map
     static init() {
@@ -125,26 +142,27 @@ class Map {
         document.getElementById("map").innerHTML = serializer.serializeToString(mapXML);
     }
 
-    // Récupère les informations des pays des API et de l'XML
+    // Rï¿½cupï¿½re les informations des pays des API et de l'XML
     static getCountriesData() {
         // Pour chaque pays de la map
         document.querySelectorAll("#map path").forEach((countryDOM) => {
             const countryCode = countryDOM.id;
             const countryXML = XML.getCountryXML(countryCode);
 
-            // On récupère la monnaie à partir d'une API
-            const countryJSON = JSON.load("https://restcountries.com/v2/alpha/" + countryCode);
-            const currency = (!countryJSON['currencies'] ? "" : countryJSON['currencies'][0])
+            // On rï¿½cupï¿½re la monnaie ï¿½ partir d'une API
+            // const countryJSON = JSON.load("https://restcountries.com/v2/alpha/" + countryCode);
+            // const currency = (!countryJSON['currencies'] ? "" : countryJSON['currencies'][0])
+            const currency = "Euro";
 
-            // On récupère la température d'une API
-            let temperature = NaN;
-            const latitude = XML.getTagValue(countryXML, "latitude");
-            const longitude = XML.getTagValue(countryXML, "longitude");
-            if (latitude && longitude) {
-                const url = "https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&longitude=" + longitude + "&hourly=temperature_2m&forecast_days=1";
-                const temperatureJSON = JSON.load(url);
-                temperature = (!temperatureJSON['hourly'] ? NaN : Math.max(...temperatureJSON['hourly']['temperature_2m']));
-            }
+            // On rï¿½cupï¿½re la tempï¿½rature d'une API
+            let temperature = 10; //NaN;
+            // const latitude = XML.getTagValue(countryXML, "latitude");
+            // const longitude = XML.getTagValue(countryXML, "longitude");
+            // if (latitude && longitude) {
+            //     const url = "https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&longitude=" + longitude + "&hourly=temperature_2m&forecast_days=1";
+            //     const temperatureJSON = JSON.load(url);
+            //     temperature = (!temperatureJSON['hourly'] ? NaN : Math.max(...temperatureJSON['hourly']['temperature_2m']));
+            // }
 
             // On stocke les informations pour chaque pays
             Map.memoCountries[countryCode] = {
@@ -157,16 +175,16 @@ class Map {
             };
         });
 
-        // Une fois terminé, on cache la page de chargement
+        // Une fois terminï¿½, on cache la page de chargement
         document.getElementById("loadingPage").style.display = "none";
     }
 
-    // Exécuté lorsque l'utilisateur survole un pays
+    // Exï¿½cutï¿½ lorsque l'utilisateur survole un pays
     static hoverCountryEvent(e) {
         const countryDOM = e.target;
         const countryCode = countryDOM.id;
 
-        // Si le pays survolé est différent de celui qui avait le focus, on fait le changement de focus
+        // Si le pays survolï¿½ est diffï¿½rent de celui qui avait le focus, on fait le changement de focus
         if (Map.focusedCountry !== countryCode) {
             if (Map.focusedCountry !== null) {
                 Map.unfocusCountry();
@@ -176,17 +194,17 @@ class Map {
             // On ajoute un listener sur le clic
             countryDOM.addEventListener('click', Map.clickCountryEvent);
 
-            // Lorsque l'utilisateur arrête de survoler le pays, on retire le focus
+            // Lorsque l'utilisateur arrï¿½te de survoler le pays, on retire le focus
             countryDOM.addEventListener("mouseleave", Map.unfocusCountry);
         }
     }
 
-    // Exécuté lorsque l'utilisateur clique sur un pays
+    // Exï¿½cutï¿½ lorsque l'utilisateur clique sur un pays
     static clickCountryEvent(e) {
         const countryDOM = e.target;
         const countryCode = countryDOM.id;
 
-        // Si l'utilisateur est en jeu et qu'il n'a pas gagné ni déjà proposé ce pays, alors on le propose
+        // Si l'utilisateur est en jeu et qu'il n'a pas gagnï¿½ ni dï¿½jï¿½ proposï¿½ ce pays, alors on le propose
         if (Game.started && !Game.win && !Game.guesses.includes(countryCode))
             Game.guessCountry(countryDOM);
     }
@@ -196,7 +214,7 @@ class Map {
         const countryCode = countryDOM.id;
         Map.focusedCountry = countryCode;
 
-        // Si pas en jeu et pays pas encore proposé, on colore le pays en gris foncé
+        // Si pas en jeu et pays pas encore proposï¿½, on colore le pays en gris foncï¿½
         if (!Game.started || !Game.guesses.includes(countryCode))
             countryDOM.style.fill = "#494949";
 
@@ -207,16 +225,16 @@ class Map {
             Page.displayTooltip(Map.getCountryTooltipContent(countryCode));
     }
 
-    // Enlève le focus du pays actuel
+    // Enlï¿½ve le focus du pays actuel
     static unfocusCountry() {
         if (Map.focusedCountry !== null) {
             const countryDOM = document.querySelector("#map path[id=" + Map.focusedCountry + "]");
             Map.focusedCountry = null;
             Page.removeTooltip();
 
-            // Si on n'est pas en jeu, et que la pays n'a pas encore été proposé, on remet sa couleur initiale
+            // Si on n'est pas en jeu, et que la pays n'a pas encore ï¿½tï¿½ proposï¿½, on remet sa couleur initiale
             if (!Game.started || !Game.guesses.includes(countryDOM.id)) {
-                // Soit gris clair, soit la couleur de la visualisation de température si elle est activée
+                // Soit gris clair, soit la couleur de la visualisation de tempï¿½rature si elle est activï¿½e
                 if (Map.temperatureVisual) {
                     console.log(Map.memoCountries[countryDOM.id].temperature)
                     countryDOM.style.fill = Map.getColorFromTemperature(Map.memoCountries[countryDOM.id].temperature);
@@ -228,7 +246,7 @@ class Map {
 
     }
 
-    // On récupère les infos du pays à afficher dans l'infobulle
+    // On rï¿½cupï¿½re les infos du pays ï¿½ afficher dans l'infobulle
     static getCountryTooltipContent(countryCode) {
         const data = Map.memoCountries[countryCode];
 
@@ -241,7 +259,7 @@ class Map {
         return content;
     }
 
-    // Parcourt les pays pour les colorer selon leur température
+    // Parcourt les pays pour les colorer selon leur tempï¿½rature
     static colorWithTemperatureGradient() {
         Map.temperatureVisual = true;
 
@@ -251,7 +269,7 @@ class Map {
         });
     }
 
-    // Renvoie une couleur correspondant à une température (en °C)
+    // Renvoie une couleur correspondant ï¿½ une tempï¿½rature (en ï¿½C)
     static getColorFromTemperature(temperature) {
         const tempMin = -30;
         const tempMax = 40;
@@ -261,7 +279,7 @@ class Map {
             return "#ccc";
 
         temperature = Math.max(Math.min(temperature, tempMax), tempMin);
-        const index = gradient.length - Math.floor((temperature-tempMin)*gradient.length/(Math.abs(tempMin)+Math.abs(tempMax))) - 1;
+        const index = gradient.length - Math.floor((temperature - tempMin) * gradient.length / (Math.abs(tempMin) + Math.abs(tempMax))) - 1;
         return gradient[index];
     }
 
@@ -289,7 +307,7 @@ class XML {
         return httpAjax.responseXML;
     }
 
-    // Récupère le XML issu de country.XSL pour un code pays particulier
+    // Rï¿½cupï¿½re le XML issu de country.XSL pour un code pays particulier
     static getCountryXML(countryCode) {
         const xsltProcessor = new XSLTProcessor();
         xsltProcessor.importStylesheet(XML.countryXSL);
@@ -297,7 +315,7 @@ class XML {
         return xsltProcessor.transformToDocument(XML.countriesXML);
     }
 
-    // Récupère le contenu d'un tag depuis un fichier XML
+    // Rï¿½cupï¿½re le contenu d'un tag depuis un fichier XML
     static getTagValue(XML, tagName) {
         return XML.getElementsByTagName(tagName)[0].innerHTML;
     }
@@ -325,9 +343,9 @@ class JSON {
 
 class Game {
     static started; // True si une partie est en cours
-    static country; // Code pays à trouver
+    static country; // Code pays ï¿½ trouver
     static guesses; // Tableau des propositions
-    static win;     // True si le joueur a gagné
+    static win;     // True si le joueur a gagnï¿½
 
     // (Re) initialise une partie
     static init() {
@@ -341,10 +359,10 @@ class Game {
     static start() {
         Game.init();
         Game.started = true;
-        // Récupère un pays au hasard
+        // Rï¿½cupï¿½re un pays au hasard
         Game.country = Page.countriesCodes[Math.floor(Math.random() * Page.countriesCodes.length)].innerHTML;
 
-        // Affiche le texte avec le pays à trouver
+        // Affiche le texte avec le pays ï¿½ trouver
         const countryXML = XML.getCountryXML(Game.country);
         document.getElementById("map").classList.add("game")
         document.getElementById("gameExplanation").innerText = "Vous devez trouver le pays";
@@ -352,17 +370,17 @@ class Game {
         document.getElementById("nbTries").innerText = "0";
         document.getElementById("gameText").style.display = "block";
 
-        // Ré-initialise la carte (pour les couleurs)
+        // Rï¿½-initialise la carte (pour les couleurs)
         Map.init();
     }
 
-    // Arrête la partie en cours
+    // Arrï¿½te la partie en cours
     static stop() {
         Game.init();
         document.getElementById("map").classList.remove("game")
         document.getElementById("gameText").style.display = "none";
 
-        // Ré-initialise la carte (pour les couleurs)
+        // Rï¿½-initialise la carte (pour les couleurs)
         Map.init();
     }
 
@@ -395,7 +413,7 @@ document.addEventListener("mousemove", (ev) => {
     Page.updateTooltip();
 });
 
-// Affiche une infobulle quand l'utilisateur survole le bouton "Visualiser les températures"
+// Affiche une infobulle quand l'utilisateur survole le bouton "Visualiser les tempï¿½ratures"
 document.getElementById("temperatureButton").addEventListener("mouseenter", (ev) => {
     Page.displayTooltip("Visualisation des temperatures maximales atteintes aujourd'hui");
 
