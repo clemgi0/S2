@@ -18,7 +18,7 @@ class Page {
         Page.generateCountrySelect();
 
         Map.init();
-        Map.initCountriesData();
+        window.setTimeout(Map.initCountriesData, 500);
     }
 
     static switchColor() {
@@ -198,7 +198,7 @@ class Map {
 
         let content = "<h2>" + data.name + " " + data.flag + "</h2>";
         content += "<h3>" + data.capital + "</h3>";
-        content += "<b>Langues :</b> " + data.languages;
+        content += "<b>Langue(s) :</b> " + data.languages;
         content += "<br/><b>Monnaie :</b> " + data.currency['name'] + " (" + data.currency['symbol'] + ")";
         content += "<br><b>Temperature maximale aujourd'hui :</b> " + data.temperature + "&#8451;";
 
@@ -341,8 +341,12 @@ document.addEventListener("mousemove", (ev) => {
     Page.updateTooltip();
 });
 
-document.getElementById("temperatureButton").addEventListener("mouseenter", () => {
+document.getElementById("temperatureButton").addEventListener("mouseenter", (ev) => {
     Page.displayTooltip("Visualisation des temperatures maximales atteintes aujourd'hui");
+
+    ev.target.addEventListener("mouseleave", () => {
+        Page.removeTooltip();
+    })
 });
 
 document.getElementById("toggle").addEventListener("mouseenter", (ev) => {
