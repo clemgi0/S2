@@ -1,9 +1,10 @@
 class Page {
-    static blueMode;
-    static mouse;
-    static tooltip;
-    static countriesCodes;
+    static blueMode;        // True si le mode bleu est activé
+    static mouse;           // Contient les coordonnées de la souris
+    static tooltip;         // Objet qui contient le DOM de l'infobulle et s'il est affiché
+    static countriesCodes;  // Nœuds XML des codes cca2 des pays (il faut faire innerHTML pour récupérer la valeur)
 
+    // Initialise la page
     static init() {
         Page.blueMode = false;
         Page.mouse = {
@@ -18,9 +19,13 @@ class Page {
         Page.generateCountrySelect();
 
         Map.init();
-        window.setTimeout(Map.initCountriesData, 500);
+
+        // On attend un peu pour laisser le temps à la page de chargement de se charger
+        // initCountriesData() prend beaucoup de temps
+        window.setTimeout(Map.getCountriesData, 500);
     }
 
+    // Change la couleur du fond
     static switchColor() {
         const defaultColor = "#121212";
         const blueColor = "#244A66FF";
@@ -37,6 +42,7 @@ class Page {
         }
     }
 
+    // Génère l'élément select contenant les codes des pays
     static generateCountrySelect() {
         const selectElement = document.getElementById("countrySelect");
         for (let i = 0; i < Page.countriesCodes.length; ++i) {
@@ -48,28 +54,31 @@ class Page {
         }
     }
 
+    // Exécuté quand l'utilisateur cherche un code pays dans le select
     static selectCountryCode() {
         const countryCode = document.getElementById("countrySelect").value;
+        const countryDOM = document.querySelector("#map path[id=" + countryCode + "]");
 
+        // Si un pays était focus, on enlève le focus
         if (Map.focusedCountry !== null)
             Map.unfocusCountry();
 
-        Map.focusedCountry = countryCode;
-
-        const countryDOM = document.querySelector("#map path[id=" + countryCode + "]");
-        countryDOM.style.fill = "#494949";
-
-        Page.displayTooltip(Map.getCountryTooltipContent(countryCode));
+        // On focus le nouveau pays
+        Map.focusCountry(countryDOM);
     }
 
+    // Affiche l'infobulle avec un contenu (HTML ou Text)
     static displayTooltip(content) {
         const tooltipDOM = Page.tooltip.element;
         tooltipDOM.style.display = "block";
         tooltipDOM.innerHTML = content;
         Page.tooltip.displayed = true;
+
+        // Met à jour les coordonnées de l'infobulle
         Page.updateTooltip();
     }
 
+    // Cache l'infobulle
     static removeTooltip() {
         Page.tooltip.displayed = false;
 
@@ -80,6 +89,7 @@ class Page {
         tooltipDOM.style.left = "0";
     }
 
+    // Modifie la position de l'infobulle pour qu'elle suive la souris si elle est activée
     static updateTooltip() {
         if (Page.tooltip.displayed) {
             const tooltipDOM = Page.tooltip.element;
@@ -92,30 +102,41 @@ class Page {
 }
 
 class Map {
-    static focusedCountry;
-    static temperatureVisual;
-    static memoCountries = {};
+    static focusedCountry;      // Code du pays qui est focus sur la map (peut être null)
+    static temperatureVisual;   // True si la visualisation de la température est activée
+    static memoCountries = {};  // Stocke les informations des pays récupérées du fichier XML et des API
 
+    // (Re) initialise la map
     static init() {
         Map.focusedCountry = null;
         Map.temperatureVisual = false;
+
+        // (Re) dessine la carte vierge
         Map.draw();
+
+        // Ajoute un listener au survol d'un pays
         document.querySelector("#map g").addEventListener("mouseover", Map.hoverCountryEvent);
     }
 
+    // Ajoute ou remplace la carte dans le DOM
     static draw() {
         const serializer = new XMLSerializer();
         const mapXML = XML.load("worldHigh.svg");
         document.getElementById("map").innerHTML = serializer.serializeToString(mapXML);
     }
 
-    static initCountriesData() {
+    // Récupère les informations des pays des API et de l'XML
+    static getCountriesData() {
+        // Pour chaque pays de la map
         document.querySelectorAll("#map path").forEach((countryDOM) => {
             const countryCode = countryDOM.id;
             const countryXML = XML.getCountryXML(countryCode);
+
+            // On récupère la monnaie à partir d'une API
             const countryJSON = JSON.load("https://restcountries.com/v2/alpha/" + countryCode);
             const currency = (!countryJSON['currencies'] ? "" : countryJSON['currencies'][0])
 
+            // On récupère la température d'une API
             let temperature = NaN;
             const latitude = XML.getTagValue(countryXML, "latitude");
             const longitude = XML.getTagValue(countryXML, "longitude");
@@ -125,6 +146,7 @@ class Map {
                 temperature = (!temperatureJSON['hourly'] ? NaN : Math.max(...temperatureJSON['hourly']['temperature_2m']));
             }
 
+            // On stocke les informations pour chaque pays
             Map.memoCountries[countryCode] = {
                 name: XML.getTagValue(countryXML, 'name'),
                 capital: XML.getTagValue(countryXML, 'capital'),
@@ -134,54 +156,67 @@ class Map {
                 temperature: temperature
             };
         });
+
+        // Une fois terminé, on cache la page de chargement
         document.getElementById("loadingPage").style.display = "none";
     }
 
+    // Exécuté lorsque l'utilisateur survole un pays
     static hoverCountryEvent(e) {
         const countryDOM = e.target;
         const countryCode = countryDOM.id;
 
+        // Si le pays survolé est différent de celui qui avait le focus, on fait le changement de focus
         if (Map.focusedCountry !== countryCode) {
             if (Map.focusedCountry !== null) {
                 Map.unfocusCountry();
             }
             Map.focusCountry(countryDOM);
+
+            // On ajoute un listener sur le clic
+            countryDOM.addEventListener('click', Map.clickCountryEvent);
+
+            // Lorsque l'utilisateur arrête de survoler le pays, on retire le focus
+            countryDOM.addEventListener("mouseleave", Map.unfocusCountry);
         }
-
-        countryDOM.addEventListener('click', Map.clickCountryEvent);
-
-        countryDOM.addEventListener("mouseleave", Map.unfocusCountry);
     }
 
+    // Exécuté lorsque l'utilisateur clique sur un pays
     static clickCountryEvent(e) {
         const countryDOM = e.target;
         const countryCode = countryDOM.id;
 
+        // Si l'utilisateur est en jeu et qu'il n'a pas gagné ni déjà proposé ce pays, alors on le propose
         if (Game.started && !Game.win && !Game.guesses.includes(countryCode))
             Game.guessCountry(countryDOM);
     }
 
+    // Met le focus sur un pays de la carte
     static focusCountry(countryDOM) {
         const countryCode = countryDOM.id;
         Map.focusedCountry = countryCode;
 
+        // Si pas en jeu et pays pas encore proposé, on colore le pays en gris foncé
         if (!Game.started || !Game.guesses.includes(countryCode))
             countryDOM.style.fill = "#494949";
 
+        // Si on est en jeu, on affiche "???" dans l'infobulle, sinon on affiche les infos du pays
         if (Game.started && !Game.win && !Game.guesses.includes(countryCode))
             Page.displayTooltip("???");
         else
             Page.displayTooltip(Map.getCountryTooltipContent(countryCode));
     }
 
+    // Enlève le focus du pays actuel
     static unfocusCountry() {
         if (Map.focusedCountry !== null) {
             const countryDOM = document.querySelector("#map path[id=" + Map.focusedCountry + "]");
             Map.focusedCountry = null;
             Page.removeTooltip();
 
-            // On remet la couleur à l'origine, sauf si le pays a été coloré pendant une partie de GeoGuessr
+            // Si on n'est pas en jeu, et que la pays n'a pas encore été proposé, on remet sa couleur initiale
             if (!Game.started || !Game.guesses.includes(countryDOM.id)) {
+                // Soit gris clair, soit la couleur de la visualisation de température si elle est activée
                 if (Map.temperatureVisual) {
                     console.log(Map.memoCountries[countryDOM.id].temperature)
                     countryDOM.style.fill = Map.getColorFromTemperature(Map.memoCountries[countryDOM.id].temperature);
@@ -193,6 +228,7 @@ class Map {
 
     }
 
+    // On récupère les infos du pays à afficher dans l'infobulle
     static getCountryTooltipContent(countryCode) {
         const data = Map.memoCountries[countryCode];
 
@@ -205,6 +241,7 @@ class Map {
         return content;
     }
 
+    // Parcourt les pays pour les colorer selon leur température
     static colorWithTemperatureGradient() {
         Map.temperatureVisual = true;
 
@@ -214,6 +251,7 @@ class Map {
         });
     }
 
+    // Renvoie une couleur correspondant à une température (en °C)
     static getColorFromTemperature(temperature) {
         const tempMin = -30;
         const tempMax = 40;
@@ -233,6 +271,7 @@ class XML {
     static countriesXML = XML.load("../countriesTP.xml");
     static countryXSL = XML.load("../country.xsl");
 
+    // Charge un fichier XML
     static load(url) {
         let httpAjax;
 
@@ -250,6 +289,7 @@ class XML {
         return httpAjax.responseXML;
     }
 
+    // Récupère le XML issu de country.XSL pour un code pays particulier
     static getCountryXML(countryCode) {
         const xsltProcessor = new XSLTProcessor();
         xsltProcessor.importStylesheet(XML.countryXSL);
@@ -257,12 +297,14 @@ class XML {
         return xsltProcessor.transformToDocument(XML.countriesXML);
     }
 
+    // Récupère le contenu d'un tag depuis un fichier XML
     static getTagValue(XML, tagName) {
         return XML.getElementsByTagName(tagName)[0].innerHTML;
     }
 }
 
 class JSON {
+    // Charge un fichier JSON
     static load(url) {
         let httpAjax;
 
@@ -282,11 +324,12 @@ class JSON {
 }
 
 class Game {
-    static started;
-    static country;
-    static guesses;
-    static win;
+    static started; // True si une partie est en cours
+    static country; // Code pays à trouver
+    static guesses; // Tableau des propositions
+    static win;     // True si le joueur a gagné
 
+    // (Re) initialise une partie
     static init() {
         Game.started = false;
         Game.country = null;
@@ -294,11 +337,14 @@ class Game {
         Game.win = false;
     }
 
+    // Commence une partie
     static start() {
         Game.init();
         Game.started = true;
+        // Récupère un pays au hasard
         Game.country = Page.countriesCodes[Math.floor(Math.random() * Page.countriesCodes.length)].innerHTML;
 
+        // Affiche le texte avec le pays à trouver
         const countryXML = XML.getCountryXML(Game.country);
         document.getElementById("map").classList.add("game")
         document.getElementById("gameExplanation").innerText = "Vous devez trouver le pays";
@@ -306,22 +352,29 @@ class Game {
         document.getElementById("nbTries").innerText = "0";
         document.getElementById("gameText").style.display = "block";
 
+        // Ré-initialise la carte (pour les couleurs)
         Map.init();
     }
 
+    // Arrête la partie en cours
     static stop() {
         Game.init();
         document.getElementById("map").classList.remove("game")
         document.getElementById("gameText").style.display = "none";
+
+        // Ré-initialise la carte (pour les couleurs)
         Map.init();
     }
 
+    // Quand le joueur propose un pays
     static guessCountry(countryDOM) {
         const countryCode = countryDOM.id;
 
+        // Ajoute le pays aux propositions et affiche le nombre d'essais
         Game.guesses.push(countryCode);
         document.getElementById("nbTries").innerText = Game.guesses.length;
 
+        // Affiche le pays en vert / rouge selon que la proposition est juste / fausse
         if (countryCode === Game.country) {
             Game.win = true;
             countryDOM.style.fill = "green";
@@ -335,12 +388,14 @@ class Game {
     }
 }
 
+// Update la position de la souris et de l'infobulle quand l'utilisateur bouge la souris
 document.addEventListener("mousemove", (ev) => {
     Page.mouse.x = ev.pageX;
     Page.mouse.y = ev.pageY;
     Page.updateTooltip();
 });
 
+// Affiche une infobulle quand l'utilisateur survole le bouton "Visualiser les températures"
 document.getElementById("temperatureButton").addEventListener("mouseenter", (ev) => {
     Page.displayTooltip("Visualisation des temperatures maximales atteintes aujourd'hui");
 
@@ -349,6 +404,7 @@ document.getElementById("temperatureButton").addEventListener("mouseenter", (ev)
     })
 });
 
+// Affiche une infobulle quand l'utilisateur survole le bouton toggle de couleur de fond
 document.getElementById("toggle").addEventListener("mouseenter", (ev) => {
     if (Page.blueMode)
         Page.displayTooltip("Desactiver l'affichage de la mer");
@@ -361,4 +417,8 @@ document.getElementById("toggle").addEventListener("mouseenter", (ev) => {
 });
 
 
+//===================================================//
+
+
+// C'est parti !
 Page.init();
