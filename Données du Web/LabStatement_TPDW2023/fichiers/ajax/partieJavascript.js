@@ -67,21 +67,19 @@ class Page {
         Map.focusCountry(countryDOM);
     }
 
-    static selectCountryLanguages() {
-        const countryCode = document.getElementById("countrySelect").value;
-        const countryXML = XML.getCountryXML(countryCode);
+    // static selectCountryLanguages() {
+    //     const countryCode = document.getElementById("countrySelect").value;
+    //     const countryXML = XML.getCountryXML(countryCode);
 
-        // On récupère les langues parlées par le pays sélectionné
-        const languages = XML.getTagValue(countryXML, "languageSolo");
+    //     // On récupère les langues parlées par le pays sélectionné
+    //     const languages = XML.getTagValue(countryXML, "languageSolo");
 
-        // On récupère les pays parlants les mêmes langues
-        const countryXML2 = XML.getCountryXML(languages);
+    //     // On récupère les pays parlants les mêmes langues
+    //     const countryXML2 = XML.getCountryXML(languages);
 
-        const pays = countryXML2.getElementsByTagName("paysMemeLangue")[0].innerHTML;
-        console.log(pays)
-
-
-    }
+    //     const pays = countryXML2.getElementsByTagName("paysMemeLangue")[0].innerHTML;
+    //     console.log(pays)
+    // }
 
 
     // Affiche l'infobulle avec un contenu (HTML ou Text)
@@ -150,19 +148,18 @@ class Map {
             const countryXML = XML.getCountryXML(countryCode);
 
             // On r�cup�re la monnaie � partir d'une API
-            // const countryJSON = JSON.load("https://restcountries.com/v2/alpha/" + countryCode);
-            // const currency = (!countryJSON['currencies'] ? "" : countryJSON['currencies'][0])
-            const currency = "Euro";
+            const countryJSON = JSON.load("https://restcountries.com/v2/alpha/" + countryCode);
+            const currency = (!countryJSON['currencies'] ? "" : countryJSON['currencies'][0])
 
             // On r�cup�re la temp�rature d'une API
-            let temperature = 10; //NaN;
-            // const latitude = XML.getTagValue(countryXML, "latitude");
-            // const longitude = XML.getTagValue(countryXML, "longitude");
-            // if (latitude && longitude) {
-            //     const url = "https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&longitude=" + longitude + "&hourly=temperature_2m&forecast_days=1";
-            //     const temperatureJSON = JSON.load(url);
-            //     temperature = (!temperatureJSON['hourly'] ? NaN : Math.max(...temperatureJSON['hourly']['temperature_2m']));
-            // }
+            let temperature = NaN;
+            const latitude = XML.getTagValue(countryXML, "latitude");
+            const longitude = XML.getTagValue(countryXML, "longitude");
+            if (latitude && longitude) {
+                const url = "https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&longitude=" + longitude + "&hourly=temperature_2m&forecast_days=1";
+                const temperatureJSON = JSON.load(url);
+                temperature = (!temperatureJSON['hourly'] ? NaN : Math.max(...temperatureJSON['hourly']['temperature_2m']));
+            }
 
             // On stocke les informations pour chaque pays
             Map.memoCountries[countryCode] = {

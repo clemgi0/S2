@@ -18,12 +18,12 @@
             </xsl:for-each>
         </languages>
         
-        <languageSolo>
+        <!-- <languageSolo>
             <xsl:apply-templates select="//cca2[text() = $country_code]/../../languages/*"/>
         </languageSolo>
         <paysMemeLangue>
             <xsl:apply-templates select='//languages[contains($country_code, ./*) and ./* != "undefined"]/../country_name/common_name'/>
-        </paysMemeLangue>
+        </paysMemeLangue> -->
         
         <flag>
             <img src="https://www.geonames.org/flags/x/{translate($country_code, 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'abcdefghijklmnopqrstuvwxyz')}.gif"
