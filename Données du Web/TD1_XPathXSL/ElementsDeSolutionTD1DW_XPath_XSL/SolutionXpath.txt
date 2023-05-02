@@ -1,6 +1,6 @@
 
-Ecrivez les expressions XPath qui retournent 
-1.	les noeuds 'Employee' 
+Ecrivez les expressions XPath qui retournent
+1.	les noeuds 'Employee'
 
 /descendant::Employee
 //Employee
@@ -23,24 +23,24 @@ Ecrivez les expressions XPath qui retournent
 //Employee/attribute::salary
 /Company/Employee/@salary
 
-mettre des @salary dans d'autres éléments
+mettre des @salary dans d'autres ï¿½lï¿½ments
 
-4.	le nombre d'employés
+4.	le nombre d'employï¿½s
 
 count(//Employee)
 
-5.	le deuxième employé 
+5.	le deuxiï¿½me employï¿½ 
 
 //Employee[position()=2]
 //Employee[2]
 
-attention à : $x("//Employee")[1]
+attention ï¿½ : $x("//Employee")[1]
 
 
-6.	les 3 premiers employés
+6.	les 3 premiers employï¿½s
 //Employee[position() < 4]
 
-7.	l’âge de l’employé ayant l’identifiant '06' 
+7.	lï¿½ï¿½ge de lï¿½employï¿½ ayant lï¿½identifiant '06' 
 //Employee[attribute::id='06']/child::Age
 //Employee[attribute::id='06']/Age
 //Employee[@id='06']/Age
@@ -48,7 +48,7 @@ attention à : $x("//Employee")[1]
 //Age[../@id='06']
 //Age[parent::*/@id='06']
 
-8.	l’âge de l’employé 'Wayne'
+8.	lï¿½ï¿½ge de lï¿½employï¿½ 'Wayne'
 //Employee[LastName='Wayne']/Age
 //Employee[LastName/text()='Wayne']/Age
 
@@ -61,7 +61,7 @@ attention à : $x("//Employee")[1]
 //LastName[self::*='Wayne']/following-sibling::Age
 //LastName[.='Wayne']/following-sibling::Age
 
-9.	les noms des employées dont la catégorie est 'Officer' 
+9.	les noms des employï¿½es dont la catï¿½gorie est 'Officer' 
 
 //Employee[Category='Officer']/LastName
 
@@ -69,14 +69,14 @@ attention à : $x("//Employee")[1]
 
 //LastName[following-sibling::Category='Officer']
 
-10.	les employés dont la longueur du prénom est d’au moins 4 caractères 
+10.	les employï¿½s dont la longueur du prï¿½nom est dï¿½au moins 4 caractï¿½res 
 
 //Employee[string-length(FirstName) >3]
 
 //FirstName[string-length(.)>3]/..
 
 
-11.	les employés dont le poste (Position) contient 'Chief'
+11.	les employï¿½s dont le poste (Position) contient 'Chief'
 //Employee[contains(Position,'Chief')]
 //Employee[contains(Position/text(),'Chief')]
 
@@ -87,7 +87,7 @@ attention à : $x("//Employee")[1]
 //Position[contains(.,'Chief')]/parent::Employee
 //Position[contains(.,'Chief')]/..
 
-12.	les employés dont le nom est le même que le domaine de leur email
+12.	les employï¿½s dont le nom est le mï¿½me que le domaine de leur email
 
 //Employee[contains(substring-after(Email,'@'), LastName)]
 
@@ -121,7 +121,7 @@ $x("//Employee[LastName=substring(Email,string-length(Email)-3-string-length(Las
 (//Employee/*[last()])[last()-1]
 
 
-14.	les employés plus jeunes que 30 ans
+14.	les employï¿½s plus jeunes que 30 ans
 
 //Employee[Age<30]
 
@@ -130,7 +130,7 @@ sum(//@salary)
 sum(//*/@salary)
 sum(//Employee/@salary)
 
-16.	l’employé après John Wayne
+16.	lï¿½employï¿½ aprï¿½s John Wayne
 
 //Employee[LastName='Wayne' and FirstName='John' ]/following-sibling::Employee[1]
 
@@ -139,5 +139,5 @@ sum(//Employee/@salary)
 
 //Employee[position()=//Employee[FirstName='John'][LastName='Wayne']/@id + 1]
 
-17.	la position de l’employé Wayne
+17.	la position de lï¿½employï¿½ Wayne
 count(//Employee[LastName='Wayne']/preceding-sibling::*)+1
