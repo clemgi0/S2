@@ -9,7 +9,6 @@ graine <- runif(1, 3000, 4000);
 Nsimu <- 100
 Nrepet <- 100
 
-
 vn <- VonNeumann(Nsimu, Nrepet, graine)
 mt <- MersenneTwister(Nsimu,Nrepet,graine)
 RANDU <- RANDU(Nsimu, Nrepet, graine)
