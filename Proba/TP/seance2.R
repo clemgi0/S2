@@ -1,8 +1,8 @@
 source("fileMM1.R")
 
-lambda <- 10
-mu <- 5
-D <- 10
+lambda <- 30
+mu <- 20
+D <- 12
 
 result <- FileMM1(lambda, mu, D)
 
