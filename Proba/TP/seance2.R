@@ -2,7 +2,7 @@ source("fileMM1.R")
 
 lambda <- 10
 mu <- 20
-D <- 1000
+D <- 12
 
 result <- FileMM1(lambda, mu, D)
 
