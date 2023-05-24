@@ -5,9 +5,9 @@
     <title>Accueil élève</title>
     <link rel="stylesheet" href="stylesheet.css">
 </head>
-<body class="disabled">
-    <div class="popup">
-        <div class="close">✕</div>
+<body>
+    <div class="popup hidden" id="demande-popup">
+        <div class="close" onclick="closePopup()">✕</div>
         <div class="popup-content">
             <span class="secondary-title mb-3">DEMANDE</span>
             <div class="field">
@@ -22,11 +22,17 @@
                 <label for="demande-description">Description</label>
                 <textarea id="demande-description"></textarea>
             </div>
-            <button id="demande-valider">Valider</button>
+            <span class="erreur"></span>
+            <button id="demande-valider" onclick="validerDemande()">Valider</button>
         </div>
-
     </div>
-    <div class="popup-block"></div>
+    <div class="popup hidden" id="succes-demande-popup">
+        <div class="close" onclick="closePopup()">✕</div>
+        <div class="popup-content">
+            <span class="m-5">Succès de la demande</span>
+        </div>
+    </div>
+    <div id="popup-block"></div>
     <div class="body-container">
         <div class="header">
             <span class="instructif-title">Instruct'IF</span>
@@ -35,14 +41,11 @@
         </div>
 
         <div class="main-container">
-
             <div class="demande-intervention mb-3">
-                <div class="aucune-demande flex-content-center hidden">
-                    <a href="">
-                        <button id="faire-demande">Faire une demande</button>
-                    </a>
+                <div class="aucune-demande flex-content-center">
+                    <button id="faire-demande" onclick="openPopup('demande-popup')">Faire une demande</button>
                 </div>
-                <div class="bloc-demande-attente">
+                <div class="bloc-demande-attente hidden">
                     <span class="secondary-title flex-item-center mb-3">Demande en cours :</span>
                     <span><b>Matière : </b> Histoire-Géographie</span>
                     <span><b>Description : </b> Je n'ai pas tout compris dans le chapitre sur le
@@ -117,8 +120,46 @@
                 <button id="historique-voir-plus">VOIR PLUS (+10)</button>
             </a>
         </div>
-
     </div>
 
+    <script>
+        function closePopup() {
+            Array.from(document.getElementsByClassName("popup")).forEach((e) => {
+                [...e.getElementsByTagName("textarea"),
+                    ...e.getElementsByTagName("input"),
+                    ...e.getElementsByTagName("select")].forEach((e) => {
+                    e.value = "";
+                })
+                let error = e.getElementsByClassName("erreur");
+                if (error.length > 0) {
+                    error.item(0).innerHTML = "";
+                }
+                e.classList.add("hidden");
+            });
+            document.body.classList.remove("disabled");
+        }
+        
+        function openPopup(popupName) {
+            document.getElementById(popupName).classList.remove("hidden");
+            document.body.classList.add("disabled");
+        }
+        
+        function validerDemande() {
+            let matiere = document.getElementById("demande-matiere").value;
+            let description = document.getElementById("demande-description").value;
+
+            if (matiere !== "" && description !== "") {
+                closePopup();
+                document.getElementsByClassName("aucune-demande").item(0).classList.add("hidden");
+                document.getElementsByClassName("bloc-demande-attente").item(0).classList.remove("hidden");
+                openPopup("succes-demande-popup");
+            }
+            else {
+                document.getElementById("demande-popup").getElementsByClassName("erreur").item(0).innerHTML = "Vous n'avez pas rempli tous les champs";
+            }
+        }
+
+        document.getElementById("popup-block").addEventListener("click", closePopup);
+    </script>
 </body>
 </html>
