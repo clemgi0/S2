@@ -8,6 +8,91 @@ html {
     font-family: 'Montserrat', sans-serif;
 }
 
+body {
+    margin: 0;
+}
+
+body.disabled {
+    overflow: hidden;
+}
+
+.popup {
+    position: fixed;
+    width: 50%;
+    z-index: 2;
+    background-color: #f6f3ee;
+    border: 3px solid #916043;
+    border-radius: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.popup > .close {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+.popup > .popup-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 20px;
+}
+
+.popup-block{
+    position: fixed;
+    z-index: 1;
+    width: 100%;
+    height: 100vh;
+    background-color: #00000094;
+}
+
+body.disabled .body-container {
+    filter : blur(1px);
+}
+
+.header {
+    width: 100%;
+    height: 100px;
+    font-size: 20px;
+    background-color: #3d2f2b;
+    color: #f6f3ee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.tableau {
+    width: 60%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 7px 0;
+}
+
+th, td {
+    border: 2px solid black;
+    padding: 10px;
+}
+
+th {
+    color: black;
+    background-color: #916043;
+}
+
+.header > .instructif-title {
+    font-size: 50px;
+}
+
 .main-container {
     display: flex;
     flex-direction: column;
@@ -33,15 +118,38 @@ span.center, p.center {
 }
 
 input[type=text], input[type=password]{
-    border: 1px solid #00000017;
+    border: 1px solid rgba(0, 0, 0, 0.5);
     color: #3d2f2b;
+}
+
+.field > label {
+    width: 45%;
+    text-align: right;
 }
 
 .field > input {
     width: 50%;
 }
 
-.bloc-connexion {
+.field > select {
+    border-radius: 0;
+    background-color: white;
+    color: #3d2f2b;
+    width: 50.5%;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+.field > textarea {
+    border-radius: 0;
+    background-color: white;
+    color: #3d2f2b;
+    width: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    resize: none;
+    height: 100px;
+}
+
+.bloc-connexion, .bloc-inscription, .bloc-demande-attente {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -52,6 +160,14 @@ input[type=text], input[type=password]{
     gap: 10px;
 }
 
+.bloc-demande-attente {
+    align-items: flex-start;
+}
+
+.bloc-inscription, .demande-intervention {
+    width: 60%;
+}
+
 .avatar {
     width: 50px;
     height: 50px;
@@ -59,7 +175,7 @@ input[type=text], input[type=password]{
     border: 3px solid #916043;
 }
 
-.secondary-color {
+.secondary-title {
     color: #916043;
     font-weight: bolder;
 }
@@ -83,10 +199,23 @@ h1.title {
     margin: 10px;
 }
 
-h1.title > .intructif {
+.instructif-title {
     font-family: 'Caveat', cursive;
+}
+
+.flex-item-center {
+    align-self: center;
+}
+
+.flex-content-center {
+    display: flex;
+    justify-content: center;
 }
 
 .mb-3 {
     margin-bottom: 20px;
+}
+
+.hidden {
+    display: none;
 }

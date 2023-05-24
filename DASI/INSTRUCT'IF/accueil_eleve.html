@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Accueil élève</title>
+    <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body class="disabled">
+    <div class="popup">
+        <div class="close">✕</div>
+        <div class="popup-content">
+            <span class="secondary-title mb-3">DEMANDE</span>
+            <div class="field">
+                <label for="demande-matiere">Matière</label>
+                <select id="demande-matiere">
+                    <option value="" disabled selected hidden>Choisissez une matière</option>
+                    <option value="histoiregeo">Histoire-Géo</option>
+                    <option value="maths">Mathématiques</option>
+                </select>
+            </div>
+            <div class="field mb-3">
+                <label for="demande-description">Description</label>
+                <textarea id="demande-description"></textarea>
+            </div>
+            <button id="demande-valider">Valider</button>
+        </div>
+
+    </div>
+    <div class="popup-block"></div>
+    <div class="body-container">
+        <div class="header">
+            <span class="instructif-title">Instruct'IF</span>
+            <br>
+            <span>Élève : Alice</span>
+        </div>
+
+        <div class="main-container">
+
+            <div class="demande-intervention mb-3">
+                <div class="aucune-demande flex-content-center hidden">
+                    <a href="">
+                        <button id="faire-demande">Faire une demande</button>
+                    </a>
+                </div>
+                <div class="bloc-demande-attente">
+                    <span class="secondary-title flex-item-center mb-3">Demande en cours :</span>
+                    <span><b>Matière : </b> Histoire-Géographie</span>
+                    <span><b>Description : </b> Je n'ai pas tout compris dans le chapitre sur le
+    Moyen-Âge, et je suis bloquée pour commencer mon devoir.</span>
+                    <span class="mb-3"><b>Intervenant : </b> Camille Martin</span>
+                    <span class="secondary-title flex-item-center">Camille n'a pas encore lancé la visio</span>
+                </div>
+            </div>
+            <div class="tableau">
+                Historique des demandes :
+                <table>
+                    <tr>
+                        <th>Intervenant</th>
+                        <th>Matière</th>
+                        <th>Description</th>
+                        <th>Jour</th>
+                        <th>Heure</th>
+                    </tr>
+                    <tr>
+                        <td>Elia Buse</td>
+                        <td>Mathématiques</td>
+                        <td>Je n'ai rien compris aux intégrales</td>
+                        <td>07/04/2023</td>
+                        <td>18h14</td>
+                    </tr>
+                    <tr>
+                        <td>Elia Buse</td>
+                        <td>Mathématiques</td>
+                        <td>Je n'ai rien compris aux intégrales</td>
+                        <td>07/04/2023</td>
+                        <td>18h14</td>
+                    </tr>
+                    <tr>
+                        <td>Elia Buse</td>
+                        <td>Mathématiques</td>
+                        <td>Je n'ai rien compris aux intégrales</td>
+                        <td>07/04/2023</td>
+                        <td>18h14</td>
+                    </tr>
+                    <tr>
+                        <td>Elia Buse</td>
+                        <td>Mathématiques</td>
+                        <td>Je n'ai rien compris aux intégrales</td>
+                        <td>07/04/2023</td>
+                        <td>18h14</td>
+                    </tr>
+                    <tr>
+                        <td>Elia Buse</td>
+                        <td>Mathématiques</td>
+                        <td>Je n'ai rien compris aux intégrales</td>
+                        <td>07/04/2023</td>
+                        <td>18h14</td>
+                    </tr>
+                    <tr>
+                        <td>Elia Buse</td>
+                        <td>Mathématiques</td>
+                        <td>Je n'ai rien compris aux intégrales</td>
+                        <td>07/04/2023</td>
+                        <td>18h14</td>
+                    </tr>
+                    <tr>
+                        <td>Elia Buse</td>
+                        <td>Mathématiques</td>
+                        <td>Je n'ai rien compris aux intégrales</td>
+                        <td>07/04/2023</td>
+                        <td>18h14</td>
+                    </tr>
+                </table>
+            </div>
+
+            <a href="">
+                <button id="historique-voir-plus">VOIR PLUS (+10)</button>
+            </a>
+        </div>
+
+    </div>
+
+</body>
+</html>
