@@ -53,15 +53,61 @@ body.disabled {
     transform: scale(1.1);
 }
 
+.evaluation-notes {
+    display: flex;
+}
+
+.evaluation-note {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+    width: 25%;
+}
+
+.evaluation-image {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    transition: 1s;
+}
+
+.evaluation-image:hover {
+    transform: rotate(1080deg);
+}
+
+.evaluation-image.note1 {
+    background-image: url("note1.png");
+}
+.evaluation-image.note2 {
+    background-image: url("note2.png");
+}
+.evaluation-image.note3 {
+    background-image: url("note3.png");
+}
+.evaluation-image.note4 {
+    background-image: url("note4.png");
+}
+.evaluation-image.note5 {
+    background-image: url("note5.png");
+}
+
 .popup {
     position: fixed;
-    width: 50%;
+    min-width: 50%;
     z-index: 2;
     background-color: #f6f3ee;
     border: 2px solid #916043;
+    border-radius: 10px;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    overflow: scroll;
+    max-width: 90%;
 }
 
 .popup > .close {
@@ -185,7 +231,7 @@ input[type=text], input[type=password]{
     height: 100px;
 }
 
-.bloc-connexion, .bloc-inscription, .bloc-demande-attente {
+.bloc-connexion, .bloc-inscription, .bloc-demande-attente, .bloc-carte {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -196,7 +242,7 @@ input[type=text], input[type=password]{
     gap: 10px;
 }
 
-.bloc-demande-attente {
+.bloc-demande-attente, .bloc-carte {
     align-items: flex-start;
 }
 
@@ -237,6 +283,45 @@ h1.title {
 
 .instructif-title {
     font-family: 'Caveat', cursive;
+}
+#carte {
+    align-self: center;
+}
+
+#carte path {
+    cursor: pointer;
+}
+
+.charts {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.chart-container {
+    width: 30%;
+}
+
+.legend {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.legend-color {
+    width: 100px;
+    height: 50px;
+    border: 1px solid black;
+}
+
+.legend1 {
+    background-color: #735e59;
+}
+.legend2 {
+    background-color: #916043;
+}
+.legend3 {
+    background-color: #c4a092;
 }
 
 .flex-item-center {

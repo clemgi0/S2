@@ -7,17 +7,64 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <div class="visio-buttons">
-        <div class="visio-button">
-            <i class="fa-solid fa-video"></i>
-        </div>
-        <div class="visio-button">
-            <i class="fa-solid fa-microphone"></i>
-        </div>
-        <div class="visio-button">
-            <i class="fa-solid fa-phone-slash"></i>
+    <div class="popup hidden" id="evaluation-popup">
+        <div class="popup-content">
+            <span class="secondary-title mb-3">Évaluez votre séance</span>
+            <div class="evaluation-notes">
+                <div class="evaluation-note">
+                    <div class="evaluation-image note1" onclick="evaluer(1)"></div>
+                    <b>1</b>
+                    <span>Je n'ai rien compris du tout</span>
+                </div>
+                <div class="evaluation-note">
+                    <div class="evaluation-image note2" onclick="evaluer(2)"></div>
+                    <b>2</b>
+                    <span>Je n'ai rien compris grand chose</span>
+                </div>
+                <div class="evaluation-note">
+                    <div class="evaluation-image note3" onclick="evaluer(3)"></div>
+                    <b>3</b>
+                    <span>J'ai compris certaines notions</span>
+                </div>
+                <div class="evaluation-note">
+                    <div class="evaluation-image note4" onclick="evaluer(4)"></div>
+                    <b>4</b>
+                    <span>J'ai compris beaucoup de choses</span>
+                </div>
+                <div class="evaluation-note">
+                    <div class="evaluation-image note5" onclick="evaluer(5)"></div>
+                    <b>5</b>
+                    <span>J'ai tout compris</span>
+                </div>
+            </div>
         </div>
     </div>
-    <div id="visio"></div>
+    <div id="popup-block"></div>
+    <div class="body-container">
+        <div class="visio-buttons">
+            <div class="visio-button">
+                <i class="fa-solid fa-video"></i>
+            </div>
+            <div class="visio-button">
+                <i class="fa-solid fa-microphone"></i>
+            </div>
+            <div class="visio-button" onclick="openPopup('evaluation-popup')">
+                <i class="fa-solid fa-phone-slash"></i>
+            </div>
+        </div>
+        <div id="visio"></div>
+    </div>
+
+    <script>
+        function openPopup(popupName) {
+            document.getElementById(popupName).classList.remove("hidden");
+            document.body.classList.add("disabled");
+        }
+
+        function evaluer(note) {
+            console.log("Note = " + note);
+            window.location.href = "accueil_intervenant.html";
+        }
+    </script>
 </body>
 </html>
