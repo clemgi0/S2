@@ -5,16 +5,30 @@
     <title>Statistiques</title>
     <link rel="stylesheet" href="stylesheet.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
 <body>
+<div id="infobulle">Je suis une infobulle</div>
 <div class="header">
     <span class="instructif-title">Instruct'IF</span>
     <br>
     <span>Tableau de bord des demandes de soutien</span>
+    <a href="connexion.html" class="logout">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+    </a>
+
 </div>
 <div class="main-container">
     <div class="demande-intervention mb-3">
-        <div class="mb-3">Nombre total de demandes : 38 145</div>
+        <div class="mb-3" style="display: flex; justify-content: space-between;align-items: center">
+            <div>Nombre total de demandes : 38 145</div>
+            <a href="accueil_intervenant.html">
+                <button>Revenir au profil</button>
+            </a>
+        </div>
+
         <div class="bloc-carte">
             <span class="secondary-title flex-item-center mb-3">REPARTITION DES DEMANDES</span>
             <svg id="carte" height="758" stroke-linecap="round" stroke-linejoin="round"
@@ -341,12 +355,21 @@
 
 <script>
     const colors = ["#735e59", "#916043", "#c4a092"];
+    const infobulle = document.getElementById("infobulle");
     document.querySelectorAll("#carte #deps path").forEach(e => {
-        const color = colors[Math.floor(Math.random()*colors.length)];
+        const color = colors[Math.floor(Math.random() * colors.length)];
         e.setAttribute("fill", color);
-        e.addEventListener("mouseover", () => {
-            console.log(e.getAttribute("data-name"));
-        })
+        e.addEventListener("mousemove", (mouse) => {
+            infobulle.classList.add("active");
+            infobulle.innerHTML = e.getAttribute("data-name") + " <b>(" + e.getAttribute("data-fill-id") + "</b>)";
+            infobulle.style.top = (mouse.pageY + 10) + "px";
+            infobulle.style.left = (mouse.pageX + 10) + "px";
+        });
+
+        e.addEventListener("mouseleave", () => {
+            infobulle.classList.remove("active");
+            infobulle.innerHTML = "";
+        });
     });
 
 
@@ -354,7 +377,7 @@
     const chart2 = document.getElementById('chart2');
     const chart3 = document.getElementById('chart3');
 
-    const data = {
+    const data1 = {
         labels: [
             "6ème",
             "5ème",
@@ -369,31 +392,86 @@
                 '#a6a6a6',
                 '#916043'
             ],
-            hoverOffset: 4
+            hoverOffset: 5
+        }]
+    };
+
+    const data2 = {
+        labels: [
+            "De 768 à 1024",
+            "De 512 à 768",
+            "De 256 à 512",
+            "De 0 à 256"
+        ],
+        datasets: [{
+            data: [50, 100, 300, 10],
+            backgroundColor: [
+                '#c4a092',
+                '#544541',
+                '#a6a6a6',
+                '#916043'
+            ],
+            hoverOffset: 5
+        }]
+    };
+
+    const data3 = {
+        labels: [
+            "Mathématiques",
+            "Français",
+            "SVT",
+            "Anglais"
+        ],
+        datasets: [{
+            data: [10, 100, 50, 300],
+            backgroundColor: [
+                '#c4a092',
+                '#544541',
+                '#a6a6a6',
+                '#916043'
+            ],
+            hoverOffset: 5
         }]
     };
 
     const config = {
         type: 'pie',
-        data: data,
         options: {
+            radius: 50,
             responsive: true,
             plugins: {
                 legend: {
-                    display: false
+                    position: 'bottom',
+                    align: 'start'
                 },
                 title: {
                     display: true,
-                    text: 'Représentation des demandes en fonction de la classe de l\'élève'
+                    font: {
+                        size: 20,
+                        weight: 'normal',
+                        family: "'Montserrat', sans-serif"
+                    },
+                    color: '#916043'
                 }
             }
 
         }
     };
 
-    new Chart(chart1, config);
-    new Chart(chart2, config);
-    new Chart(chart3, config);
+    let config1 = {...config};
+    config1.data = data1;
+    config1.options.plugins.title.text = "Représentation des demandes en fonction de la classe de l'élève";
+    let config2 = {...config};
+    config2.data = data2;
+    config2.options.plugins.title.text = "Représentation des demandes en fonction de l'IPS de l'établissement";
+    let config3 = {...config};
+    config3.data = data3;
+    config3.options.plugins.title.text = "Représentation des demandes en fonction de la matière demandée";
+
+
+    new Chart(chart1, config1);
+    new Chart(chart2, config2);
+    new Chart(chart3, config3);
 
 </script>
 </body>

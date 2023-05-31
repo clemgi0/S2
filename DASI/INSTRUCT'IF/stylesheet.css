@@ -17,7 +17,7 @@ body.disabled {
 }
 
 #visio {
-    background-image: url("visio.png");
+    background-image: url("visio.jpg");
     width: 100%;
     height: 100vh;
     background-position: center;
@@ -46,7 +46,8 @@ body.disabled {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 30px;
+    font-size: 45px;
+    color: #350e07;
 }
 
 .visio-button:hover {
@@ -94,6 +95,29 @@ body.disabled {
 }
 .evaluation-image.note5 {
     background-image: url("note5.png");
+}
+
+#infobulle {
+    display: none;
+    padding: 15px;
+    background-color: #f6f3ee;
+    border: 2px solid #916043;
+    border-radius: 10px;
+    position: absolute;
+    width: fit-content;
+}
+
+#infobulle.active {
+    display: block;
+}
+
+.logout {
+    color: inherit;
+    text-decoration: inherit;
+    position: absolute;
+    right: 20px;
+    font-size: 30px;
+    cursor: pointer;
 }
 
 .popup {
@@ -251,10 +275,8 @@ input[type=text], input[type=password]{
 }
 
 .avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 25px;
-    border: 3px solid #916043;
+    font-size: 50px;
+    color: #916043;
 }
 
 .secondary-title {
@@ -290,6 +312,11 @@ h1.title {
 
 #carte path {
     cursor: pointer;
+    transition: 0.2s;
+}
+
+#carte path:hover {
+    filter: brightness(0.8);
 }
 
 .charts {

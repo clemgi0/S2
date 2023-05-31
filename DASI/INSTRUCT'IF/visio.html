@@ -42,10 +42,10 @@
     <div id="popup-block"></div>
     <div class="body-container">
         <div class="visio-buttons">
-            <div class="visio-button">
+            <div class="visio-button" onclick="switchVideo(this)">
                 <i class="fa-solid fa-video"></i>
             </div>
-            <div class="visio-button">
+            <div class="visio-button" onclick="switchMicro(this)">
                 <i class="fa-solid fa-microphone"></i>
             </div>
             <div class="visio-button" onclick="openPopup('evaluation-popup')">
@@ -64,6 +64,29 @@
         function evaluer(note) {
             console.log("Note = " + note);
             window.location.href = "accueil_intervenant.html";
+        }
+
+        function switchVideo(e) {
+            const icon = e.childNodes[1];
+            if (icon.classList.contains('fa-video')) {
+                icon.classList.remove('fa-video');
+                icon.classList.add('fa-video-slash');
+            }
+            else {
+                icon.classList.add('fa-video');
+                icon.classList.remove('fa-video-slash');
+            }
+        }
+        function switchMicro(e) {
+            const icon = e.childNodes[1];
+            if (icon.classList.contains('fa-microphone')) {
+                icon.classList.remove('fa-microphone');
+                icon.classList.add('fa-microphone-slash');
+            }
+            else {
+                icon.classList.add('fa-microphone');
+                icon.classList.remove('fa-microphone-slash');
+            }
         }
     </script>
 </body>

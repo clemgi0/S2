@@ -4,162 +4,167 @@
     <meta charset="UTF-8">
     <title>Accueil élève</title>
     <link rel="stylesheet" href="stylesheet.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+          integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
 </head>
 <body>
-    <div class="popup hidden" id="demande-popup">
-        <div class="close" onclick="closePopup()">✕</div>
-        <div class="popup-content">
-            <span class="secondary-title mb-3">DEMANDE</span>
-            <div class="field">
-                <label for="demande-matiere">Matière</label>
-                <select id="demande-matiere">
-                    <option value="" disabled selected hidden>Choisissez une matière</option>
-                    <option value="histoiregeo">Histoire-Géo</option>
-                    <option value="maths">Mathématiques</option>
-                </select>
-            </div>
-            <div class="field mb-3">
-                <label for="demande-description">Description</label>
-                <textarea id="demande-description"></textarea>
-            </div>
-            <span class="erreur"></span>
-            <button id="demande-valider" onclick="validerDemande()">Valider</button>
+<div class="popup hidden" id="demande-popup">
+    <div class="close" onclick="closePopup()">✕</div>
+    <div class="popup-content">
+        <span class="secondary-title mb-3">DEMANDE</span>
+        <div class="field">
+            <label for="demande-matiere">Matière</label>
+            <select id="demande-matiere">
+                <option value="" disabled selected hidden>Choisissez une matière</option>
+                <option value="histoiregeo">Histoire-Géo</option>
+                <option value="maths">Mathématiques</option>
+            </select>
         </div>
+        <div class="field mb-3">
+            <label for="demande-description">Description</label>
+            <textarea id="demande-description"></textarea>
+        </div>
+        <span class="erreur"></span>
+        <button id="demande-valider" onclick="validerDemande()">Valider</button>
     </div>
-    <div class="popup hidden" id="succes-demande-popup">
-        <div class="close" onclick="closePopup()">✕</div>
-        <div class="popup-content">
-            <span class="m-5">Succès de la demande</span>
-        </div>
+</div>
+<div class="popup hidden" id="succes-demande-popup">
+    <div class="close" onclick="closePopup()">✕</div>
+    <div class="popup-content">
+        <span class="m-5">Succès de la demande</span>
     </div>
-    <div id="popup-block"></div>
-    <div class="body-container">
-        <div class="header">
-            <span class="instructif-title">Instruct'IF</span>
-            <br>
-            <span>Élève : Alice</span>
-        </div>
+</div>
+<div id="popup-block"></div>
+<div class="body-container">
+    <div class="header">
+        <span class="instructif-title">Instruct'IF</span>
+        <br>
+        <span>Élève : Alice</span>
+        <a href="connexion.html" class="logout">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </a>
+    </div>
 
-        <div class="main-container">
-            <div class="demande-intervention mb-3">
-                <div class="aucune-demande flex-content-center">
-                    <button id="faire-demande" onclick="openPopup('demande-popup')">Faire une demande</button>
-                </div>
-                <div class="bloc-demande-attente hidden">
-                    <span class="secondary-title flex-item-center mb-3">Demande en cours :</span>
-                    <span><b>Matière : </b> Histoire-Géographie</span>
-                    <span><b>Description : </b> Je n'ai pas tout compris dans le chapitre sur le
+    <div class="main-container">
+        <div class="demande-intervention mb-3">
+            <div class="aucune-demande flex-content-center">
+                <button id="faire-demande" onclick="openPopup('demande-popup')">Faire une demande</button>
+            </div>
+            <div class="bloc-demande-attente hidden">
+                <span class="secondary-title flex-item-center mb-3">Demande en cours :</span>
+                <span><b>Matière : </b> Histoire-Géographie</span>
+                <span><b>Description : </b> Je n'ai pas tout compris dans le chapitre sur le
     Moyen-Âge, et je suis bloquée pour commencer mon devoir.</span>
-                    <span class="mb-3"><b>Intervenant : </b> Camille Martin</span>
-                    <span class="secondary-title flex-item-center">Camille n'a pas encore lancé la visio</span>
-                </div>
+                <span class="mb-3"><b>Intervenant : </b> Camille Martin</span>
+                <span class="secondary-title flex-item-center">Camille n'a pas encore lancé la visio</span>
             </div>
-            <div class="tableau">
-                Historique des demandes :
-                <table>
-                    <tr>
-                        <th>Intervenant</th>
-                        <th>Matière</th>
-                        <th>Description</th>
-                        <th>Jour</th>
-                        <th>Heure</th>
-                    </tr>
-                    <tr>
-                        <td>Elia Buse</td>
-                        <td>Mathématiques</td>
-                        <td>Je n'ai rien compris aux intégrales</td>
-                        <td>07/04/2023</td>
-                        <td>18h14</td>
-                    </tr>
-                    <tr>
-                        <td>Elia Buse</td>
-                        <td>Mathématiques</td>
-                        <td>Je n'ai rien compris aux intégrales</td>
-                        <td>07/04/2023</td>
-                        <td>18h14</td>
-                    </tr>
-                    <tr>
-                        <td>Elia Buse</td>
-                        <td>Mathématiques</td>
-                        <td>Je n'ai rien compris aux intégrales</td>
-                        <td>07/04/2023</td>
-                        <td>18h14</td>
-                    </tr>
-                    <tr>
-                        <td>Elia Buse</td>
-                        <td>Mathématiques</td>
-                        <td>Je n'ai rien compris aux intégrales</td>
-                        <td>07/04/2023</td>
-                        <td>18h14</td>
-                    </tr>
-                    <tr>
-                        <td>Elia Buse</td>
-                        <td>Mathématiques</td>
-                        <td>Je n'ai rien compris aux intégrales</td>
-                        <td>07/04/2023</td>
-                        <td>18h14</td>
-                    </tr>
-                    <tr>
-                        <td>Elia Buse</td>
-                        <td>Mathématiques</td>
-                        <td>Je n'ai rien compris aux intégrales</td>
-                        <td>07/04/2023</td>
-                        <td>18h14</td>
-                    </tr>
-                    <tr>
-                        <td>Elia Buse</td>
-                        <td>Mathématiques</td>
-                        <td>Je n'ai rien compris aux intégrales</td>
-                        <td>07/04/2023</td>
-                        <td>18h14</td>
-                    </tr>
-                </table>
-            </div>
-
-            <a href="">
-                <button id="historique-voir-plus">VOIR PLUS (+10)</button>
-            </a>
         </div>
+        <div class="tableau">
+            Historique des demandes :
+            <table>
+                <tr>
+                    <th>Intervenant</th>
+                    <th>Matière</th>
+                    <th>Description</th>
+                    <th>Jour</th>
+                    <th>Heure</th>
+                </tr>
+                <tr>
+                    <td>Elia Buse</td>
+                    <td>Mathématiques</td>
+                    <td>Je n'ai rien compris aux intégrales</td>
+                    <td>07/04/2023</td>
+                    <td>18h14</td>
+                </tr>
+                <tr>
+                    <td>Elia Buse</td>
+                    <td>Mathématiques</td>
+                    <td>Je n'ai rien compris aux intégrales</td>
+                    <td>07/04/2023</td>
+                    <td>18h14</td>
+                </tr>
+                <tr>
+                    <td>Elia Buse</td>
+                    <td>Mathématiques</td>
+                    <td>Je n'ai rien compris aux intégrales</td>
+                    <td>07/04/2023</td>
+                    <td>18h14</td>
+                </tr>
+                <tr>
+                    <td>Elia Buse</td>
+                    <td>Mathématiques</td>
+                    <td>Je n'ai rien compris aux intégrales</td>
+                    <td>07/04/2023</td>
+                    <td>18h14</td>
+                </tr>
+                <tr>
+                    <td>Elia Buse</td>
+                    <td>Mathématiques</td>
+                    <td>Je n'ai rien compris aux intégrales</td>
+                    <td>07/04/2023</td>
+                    <td>18h14</td>
+                </tr>
+                <tr>
+                    <td>Elia Buse</td>
+                    <td>Mathématiques</td>
+                    <td>Je n'ai rien compris aux intégrales</td>
+                    <td>07/04/2023</td>
+                    <td>18h14</td>
+                </tr>
+                <tr>
+                    <td>Elia Buse</td>
+                    <td>Mathématiques</td>
+                    <td>Je n'ai rien compris aux intégrales</td>
+                    <td>07/04/2023</td>
+                    <td>18h14</td>
+                </tr>
+            </table>
+        </div>
+
+        <a href="">
+            <button id="historique-voir-plus">VOIR PLUS (+10)</button>
+        </a>
     </div>
+</div>
 
-    <script>
-        function closePopup() {
-            Array.from(document.getElementsByClassName("popup")).forEach((e) => {
-                [...e.getElementsByTagName("textarea"),
-                    ...e.getElementsByTagName("input"),
-                    ...e.getElementsByTagName("select")].forEach((e) => {
-                    e.value = "";
-                })
-                let error = e.getElementsByClassName("erreur");
-                if (error.length > 0) {
-                    error.item(0).innerHTML = "";
-                }
-                e.classList.add("hidden");
-            });
-            document.body.classList.remove("disabled");
-        }
-        
-        function openPopup(popupName) {
-            document.getElementById(popupName).classList.remove("hidden");
-            document.body.classList.add("disabled");
-        }
-        
-        function validerDemande() {
-            let matiere = document.getElementById("demande-matiere").value;
-            let description = document.getElementById("demande-description").value;
-
-            if (matiere !== "" && description !== "") {
-                closePopup();
-                document.getElementsByClassName("aucune-demande").item(0).classList.add("hidden");
-                document.getElementsByClassName("bloc-demande-attente").item(0).classList.remove("hidden");
-                openPopup("succes-demande-popup");
+<script>
+    function closePopup() {
+        Array.from(document.getElementsByClassName("popup")).forEach((e) => {
+            [...e.getElementsByTagName("textarea"),
+                ...e.getElementsByTagName("input"),
+                ...e.getElementsByTagName("select")].forEach((e) => {
+                e.value = "";
+            })
+            let error = e.getElementsByClassName("erreur");
+            if (error.length > 0) {
+                error.item(0).innerHTML = "";
             }
-            else {
-                document.getElementById("demande-popup").getElementsByClassName("erreur").item(0).innerHTML = "Vous n'avez pas rempli tous les champs";
-            }
-        }
+            e.classList.add("hidden");
+        });
+        document.body.classList.remove("disabled");
+    }
 
-        document.getElementById("popup-block").addEventListener("click", closePopup);
-    </script>
+    function openPopup(popupName) {
+        document.getElementById(popupName).classList.remove("hidden");
+        document.body.classList.add("disabled");
+    }
+
+    function validerDemande() {
+        let matiere = document.getElementById("demande-matiere").value;
+        let description = document.getElementById("demande-description").value;
+
+        if (matiere !== "" && description !== "") {
+            closePopup();
+            document.getElementsByClassName("aucune-demande").item(0).classList.add("hidden");
+            document.getElementsByClassName("bloc-demande-attente").item(0).classList.remove("hidden");
+            openPopup("succes-demande-popup");
+        } else {
+            document.getElementById("demande-popup").getElementsByClassName("erreur").item(0).innerHTML = "Vous n'avez pas rempli tous les champs";
+        }
+    }
+
+    document.getElementById("popup-block").addEventListener("click", closePopup);
+</script>
 </body>
 </html>
